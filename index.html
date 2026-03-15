@@ -903,14 +903,56 @@
             color: #0066cc;
         }
 
+        /* ===== 移动端优化样式（不影响电脑端） ===== */
         @media (max-width: 1000px) {
-            .main-panel { flex-direction: column; }
-            .calendar-left, .detail-right { flex: auto; }
-            .filter-bar { flex-direction: column; align-items: flex-start; }
-            .button-group { margin-left: 0; }
-            .year-calendar { grid-template-columns: repeat(2, 1fr); }
-            .detail-item.with-image-uniform {
-                flex-wrap: wrap;
+            .main-panel {
+                flex-direction: column;
+            }
+            
+            .calendar-left, .detail-right {
+                flex: none;
+                width: 100%;
+            }
+            
+            .calendar-left {
+                max-height: 300px;
+                overflow-y: auto;
+                margin-bottom: 15px;
+            }
+            
+            .detail-right {
+                max-height: 400px;
+                overflow-y: auto;
+            }
+            
+            /* 横屏优化 */
+            @media (orientation: landscape) {
+                .calendar-left {
+                    max-height: 70vh;
+                }
+                
+                .detail-right {
+                    max-height: 70vh;
+                }
+            }
+            
+            /* 筛选栏在小屏幕上紧凑排列 */
+            .filter-bar {
+                padding: 10px 15px;
+                gap: 10px;
+            }
+            
+            .filter-select-group {
+                gap: 5px;
+            }
+            
+            .filter-item {
+                padding: 3px 10px 3px 14px;
+            }
+            
+            .filter-item select {
+                min-width: 70px;
+                padding: 4px 2px;
             }
         }
     </style>
@@ -933,7 +975,7 @@
         <span class="nav-tab" data-category="treasure">💗 安利</span>
     </div>
 
-    <!-- 筛选栏 -->
+    <!-- 筛选栏 - 增加了日筛选 -->
     <div class="filter-bar" id="filterBar">
         <span class="filter-label">🔍 筛选：</span>
         <div class="filter-select-group">
@@ -947,6 +989,12 @@
                 <label for="monthFilter">月</label>
                 <select id="monthFilter">
                     <option value="all">全部月份</option>
+                </select>
+            </div>
+            <div class="filter-item">
+                <label for="dayFilter">日</label>
+                <select id="dayFilter">
+                    <option value="all">全部日期</option>
                 </select>
             </div>
         </div>
@@ -1897,23 +1945,23 @@
             },
             '2026-03-04': {
                 tags: [
-                    { text: '📌 林孝埈捐赠头盔', type: 'type-record', category: 'record' }
+                    { text: '📌 捐赠头盔', type: 'type-record', category: 'record' }
                 ],
                 details: [
                     { 
-                        text: '📌 olympicmuseum-ins快拍更新相关: 林孝埈捐赠头盔 ', 
-                        sources: [{ title: 'YouTube 完整版', link: 'https://www.youtube.com/20260305', platform: 'YouTube' }],
+                        text: '📌 小林向奥林匹克博物馆捐赠头盔 ', 
+                        sources: [{ title: 'olympicmuseum-ins快拍更新相关: 林孝埈捐赠头盔', link: 'https://www.youtube.com/20260305', platform: 'YouTube' }],
                         categories: ['activity'] 
                     }
                 ]
             },
             '2026-03-06': {
                 tags: [
-                    { text: '📸 品牌合作-沃尔沃系列互动', type: 'type-activity', category: 'activity' }
+                    { text: '📸 品牌合作-沃尔沃互动', type: 'type-activity', category: 'activity' }
                 ],
                 details: [
                     { 
-                        text: '📸 品牌合作-沃尔沃挚友系列互动', 
+                        text: '📸 品牌合作-沃尔沃互动', 
                         time: '10:00', 
                         sources: [
                             { title: '小林更新微博并点赞', link: 'https://weibo.com/7725970927/5273410080342975', platform: 'Weibo', author: '林孝埈Lin_xiaojun' },
@@ -1932,7 +1980,7 @@
                 ],
                 details: [
                     { 
-                        text: '🧣 微博点赞-蔡佳云米兰冬残奥会中国首金', 
+                        text: '🧣 微博点赞-米兰冬残奥会中国首金', 
                         time: '20:53', 
                         sources: [
                             { title: '点赞记录', link: 'https://weibo.com/7832568510/5273959865258799', platform: 'Weibo', author: '林孝埈Lin_xiaojun｜-Bifröst-' },
@@ -1957,8 +2005,46 @@
             '2026-03-14': {
                 tags: [
                     { text: '📸 F1中国大奖赛观赛&颁奖', type: 'type-activity', category: 'activity' },
+                    { text: '📷 ins更新', type: 'type-sns', category: 'sns' },
+                    { text: '🧣 微博更新', type: 'type-sns', category: 'sns' },
+                    { text: '📕 小红书更新', type: 'type-sns', category: 'sns' }
+                ],
+                details: [
+                    { 
+                        text: '📸 F1中国大奖赛观赛&颁奖', 
+                        sources: [
+                            { title: 'F1官微-当冰场上的先锋遇上赛道上的极速💨 欢迎小林来到2026F1中国大奖赛', link: 'https://weibo.com/7832568510/5276860231191270', platform: 'Weibo', author: 'F1世界锦标赛' },
+                            { title: 'F1官微-赛场之上，众星云集', link: 'https://weibo.com/7832568510/5276860231191270', platform: 'Weibo', author: 'F1世界锦标赛' },
+                            { title: '微博搬运', link: 'https://weibo.com/7832568510/5276860231191270', platform: 'Weibo', author: '-Bifröst-' },
+                        ],
+                        categories: ['activity'] 
+                    },
+                    { 
+                        text: '📷 ins更新-和倍耐力共创-祝贺Kimi Antonelli夺得F1生涯杆位', 
+                        sources: [
+                            { title: 'ins原贴', link: 'https://www.instagram.com/p/DV29irUgr3w/?igsh=eHN3bG90b3YxODdi', platform: 'Instagram', author: 'lim_hyojun｜pirelli_motorsport' },
+                            { title: '微博搬运', link: 'https://weibo.com/7832568510/5276860231191270', platform: 'Weibo', author: '-Bifröst-' },
+                        ],
+                        categories: ['sns'] 
+                    },
+                    { 
+                        text: '🧣 微博更新-2026F1中国大奖赛·上海', 
+                        sources: [{ title: '第一次在现场观赛F1', link: 'https://weibo.com/7725970927/5276477174056095', platform: 'Weibo', author: '林孝埈Lin_xiaojun' }],
+                        categories: ['sns'] 
+                    },
+                    { 
+                        text: '📕 小红书更新-2026F1中国大奖赛·上海', 
+                        sources: [{ title: '开心😘😘😘 #帅气的运动员#', link: 'http://xhslink.com/o/5KsWbvEKpRp', platform: 'Rednote', author: '林孝埈' }],
+                        categories: ['sns'] 
+                    }
+                ]
+            },
+            '2026-03-15': {
+                tags: [
+                    { text: '📸 F1中国大奖赛观赛', type: 'type-activity', category: 'activity' },
                     { text: '🧣 微博更新', type: 'type-sns', category: 'sns' },
                     { text: '📕 小红书更新', type: 'type-sns', category: 'sns' },
+                    { text: '🫘 抖音更新', type: 'type-sns', category: 'sns' },
                 ],
                 details: [
                     { 
@@ -2060,22 +2146,30 @@
         const today = new Date();
         const currentYear = today.getFullYear();
         const currentMonth = today.getMonth() + 1;
+        const currentDay = today.getDate();
 
         // ========== 工具函数 ==========
         function getAvailableYearsMonths() {
             const years = new Set();
             const monthsByYear = {};
+            const daysByYearMonth = {};
             
             Object.keys(allData).forEach(dateStr => {
-                const [year, month] = dateStr.split('-').map(Number);
+                const [year, month, day] = dateStr.split('-').map(Number);
                 years.add(year);
+                
                 if (!monthsByYear[year]) monthsByYear[year] = new Set();
                 monthsByYear[year].add(month);
+                
+                if (!daysByYearMonth[year]) daysByYearMonth[year] = {};
+                if (!daysByYearMonth[year][month]) daysByYearMonth[year][month] = new Set();
+                daysByYearMonth[year][month].add(day);
             });
             
             return {
                 years: Array.from(years).sort((a, b) => a - b),
-                monthsByYear: monthsByYear
+                monthsByYear: monthsByYear,
+                daysByYearMonth: daysByYearMonth
             };
         }
 
@@ -2086,24 +2180,30 @@
             });
         }
 
-        function findNearestAvailableDate(targetYear, targetMonth) {
+        function hasDataForYearMonthDay(year, month, day) {
+            const dateStr = `${year}-${String(month).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
+            return allData.hasOwnProperty(dateStr);
+        }
+
+        function findNearestAvailableDate(targetYear, targetMonth, targetDay) {
             const availableDates = [];
             Object.keys(allData).forEach(dateStr => {
-                const [year, month] = dateStr.split('-').map(Number);
-                availableDates.push({ year, month });
+                const [year, month, day] = dateStr.split('-').map(Number);
+                availableDates.push({ year, month, day });
             });
             
             availableDates.sort((a, b) => {
                 if (a.year !== b.year) return a.year - b.year;
-                return a.month - b.month;
+                if (a.month !== b.month) return a.month - b.month;
+                return a.day - b.day;
             });
             
-            const targetTimestamp = new Date(targetYear, targetMonth - 1, 1).getTime();
+            const targetTimestamp = new Date(targetYear, targetMonth - 1, targetDay).getTime();
             let nearestDate = availableDates[0];
-            let minDiff = Math.abs(new Date(nearestDate.year, nearestDate.month - 1, 1).getTime() - targetTimestamp);
+            let minDiff = Math.abs(new Date(nearestDate.year, nearestDate.month - 1, nearestDate.day).getTime() - targetTimestamp);
             
             availableDates.forEach(date => {
-                const ts = new Date(date.year, date.month - 1, 1).getTime();
+                const ts = new Date(date.year, date.month - 1, date.day).getTime();
                 const diff = Math.abs(ts - targetTimestamp);
                 if (diff < minDiff) {
                     minDiff = diff;
@@ -2176,19 +2276,23 @@
 
         let defaultYear = currentYear;
         let defaultMonth = currentMonth;
+        let defaultDay = currentDay;
 
-        if (!hasDataForYearMonth(currentYear, currentMonth)) {
-            const nearest = findNearestAvailableDate(currentYear, currentMonth);
+        if (!hasDataForYearMonthDay(currentYear, currentMonth, currentDay)) {
+            const nearest = findNearestAvailableDate(currentYear, currentMonth, currentDay);
             defaultYear = nearest.year;
             defaultMonth = nearest.month;
+            defaultDay = nearest.day;
         }
 
         let currentCategory = 'all';
         let selectedYear = String(defaultYear);
         let selectedMonth = String(defaultMonth);
+        let selectedDay = String(defaultDay);
 
         const yearFilter = document.getElementById('yearFilter');
         const monthFilter = document.getElementById('monthFilter');
+        const dayFilter = document.getElementById('dayFilter');
         const clearFilterBtn = document.getElementById('clearFilterBtn');
         const todayBtn = document.getElementById('todayBtn');
         const calendarLeft = document.getElementById('calendarLeft');
@@ -2354,16 +2458,55 @@
 
         function initMonthSelect() {
             const { monthsByYear } = getAvailableYearsMonths();
-            const availableMonths = monthsByYear[parseInt(selectedYear)] || new Set();
-            let options = '<option value="all">全部月份</option>';
-            Array.from(availableMonths).sort((a, b) => a - b).forEach(month => {
-                options += `<option value="${month}" ${month === parseInt(selectedMonth) ? 'selected' : ''}>${month}月</option>`;
+            
+            if (selectedYear === 'all') {
+                // 如果选了全部年份，显示所有月份
+                const allMonths = new Set();
+                Object.values(monthsByYear).forEach(months => {
+                    months.forEach(m => allMonths.add(m));
+                });
+                
+                let options = '<option value="all">全部月份</option>';
+                Array.from(allMonths).sort((a, b) => a - b).forEach(month => {
+                    options += `<option value="${month}" ${month === parseInt(selectedMonth) ? 'selected' : ''}>${month}月</option>`;
+                });
+                monthFilter.innerHTML = options;
+            } else {
+                const availableMonths = monthsByYear[parseInt(selectedYear)] || new Set();
+                
+                let options = '<option value="all">全部月份</option>';
+                Array.from(availableMonths).sort((a, b) => a - b).forEach(month => {
+                    options += `<option value="${month}" ${month === parseInt(selectedMonth) ? 'selected' : ''}>${month}月</option>`;
+                });
+                monthFilter.innerHTML = options;
+            }
+        }
+
+        function initDaySelect() {
+            const { daysByYearMonth } = getAvailableYearsMonths();
+            
+            if (selectedYear === 'all' || selectedMonth === 'all') {
+                // 如果年或月是全部，日也显示全部
+                dayFilter.innerHTML = '<option value="all">全部日期</option>';
+                dayFilter.value = 'all';
+                selectedDay = 'all';
+                return;
+            }
+            
+            const year = parseInt(selectedYear);
+            const month = parseInt(selectedMonth);
+            const availableDays = daysByYearMonth[year]?.[month] || new Set();
+            
+            let options = '<option value="all">全部日期</option>';
+            Array.from(availableDays).sort((a, b) => a - b).forEach(day => {
+                options += `<option value="${day}" ${day === parseInt(selectedDay) ? 'selected' : ''}>${day}日</option>`;
             });
-            monthFilter.innerHTML = options;
+            dayFilter.innerHTML = options;
         }
 
         initYearSelect();
         initMonthSelect();
+        initDaySelect();
 
         // ========== 核心筛选函数 ==========
         function getFilteredDetails() {
@@ -2378,10 +2521,11 @@
             // 其他分类的正常筛选
             let filtered = [];
             Object.entries(allData).forEach(([dateStr, data]) => {
-                const [year, month] = dateStr.split('-').map(Number);
+                const [year, month, day] = dateStr.split('-').map(Number);
                 
                 if (selectedYear !== 'all' && year !== parseInt(selectedYear)) return;
                 if (selectedMonth !== 'all' && month !== parseInt(selectedMonth)) return;
+                if (selectedDay !== 'all' && day !== parseInt(selectedDay)) return;
                 
                 if (data.details && data.details.length > 0) {
                     let detailsToAdd = [];
@@ -2397,9 +2541,9 @@
                     detailsToAdd.forEach(d => {
                         filtered.push({
                             ...d,
-                            displayDate: `${year}.${String(month).padStart(2, '0')}.${dateStr.split('-')[2]}`,
+                            displayDate: `${year}.${String(month).padStart(2, '0')}.${String(day).padStart(2, '0')}`,
                             fullDate: dateStr,
-                            year, month, day: parseInt(dateStr.split('-')[2])
+                            year, month, day
                         });
                     });
                 }
@@ -2505,6 +2649,7 @@
             if (currentCategory !== 'treasure') {
                 if (selectedYear !== 'all') titleText += ` ${selectedYear}年`;
                 if (selectedMonth !== 'all') titleText += ` ${selectedMonth}月`;
+                if (selectedDay !== 'all') titleText += ` ${selectedDay}日`;
             }
             
             detailTitle.innerHTML = `${titleText} <span>${filtered.length}条</span>`;
@@ -2668,61 +2813,114 @@
             detailList.innerHTML = html;
         }
 
-        // 渲染年历
-        function renderYearCalendar(year) {
-            const months = Array.from({ length: 12 }, (_, i) => i + 1);
-            const weekdays = ['日', '一', '二', '三', '四', '五', '六'];
+        // 渲染全年动态列表（替换原来的年历）
+        function renderYearDetails(year) {
+            let html = '<div class="year-details">';
             
-            let html = '<div class="year-calendar">';
-            
-            months.forEach(month => {
-                const daysWithEvents = new Set();
-                Object.keys(allData).forEach(dateStr => {
-                    const [y, m, d] = dateStr.split('-').map(Number);
-                    if (y === year && m === month) {
-                        daysWithEvents.add(d);
+            // 获取该年份的所有动态
+            const yearDetails = [];
+            Object.entries(allData).forEach(([dateStr, data]) => {
+                const [y, m, d] = dateStr.split('-').map(Number);
+                if (y === year) {
+                    if (data.details && data.details.length > 0) {
+                        data.details.forEach(detail => {
+                            yearDetails.push({
+                                ...detail,
+                                displayDate: `${y}.${String(m).padStart(2, '0')}.${String(d).padStart(2, '0')}`,
+                                fullDate: dateStr,
+                                year: y, month: m, day: d
+                            });
+                        });
                     }
-                });
-                
-                const daysInMonth = new Date(year, month, 0).getDate();
-                const firstDay = new Date(year, month - 1, 1).getDay();
-                
-                let daysHtml = '';
-                for (let i = 0; i < firstDay; i++) daysHtml += '<div class="preview-day"></div>';
-                for (let d = 1; d <= daysInMonth; d++) {
-                    daysHtml += `<div class="preview-day ${daysWithEvents.has(d) ? 'has-event' : ''}">${d}</div>`;
                 }
-                
-                html += `
-                    <div class="month-card" data-year="${year}" data-month="${month}">
-                        <h4>${month}月</h4>
-                        <div class="month-preview">${weekdays.map(w => `<span class="preview-weekday">${w}</span>`).join('')}</div>
-                        <div class="preview-days">${daysHtml}</div>
-                        <div class="month-stats">
-                            <span>📅 ${daysInMonth}天</span>
-                            <span>📌 ${daysWithEvents.size}个动态日</span>
-                        </div>
-                    </div>
-                `;
             });
+            
+            // 按日期排序
+            yearDetails.sort((a, b) => a.fullDate.localeCompare(b.fullDate));
+            
+            if (yearDetails.length === 0) {
+                html += '<div class="no-data">✨ 该年份没有动态</div>';
+            } else {
+                // 按月份分组显示
+                let currentMonth = 0;
+                yearDetails.forEach((item, index) => {
+                    if (item.month !== currentMonth) {
+                        if (currentMonth !== 0) html += '</div>';
+                        currentMonth = item.month;
+                        html += `<div class="month-group"><h4>${currentMonth}月</h4>`;
+                    }
+                    
+                    const idxStr = String(index + 1).padStart(2, '0');
+                    const timeHtml = item.time ? `<span class="item-time">${item.time}</span>` : '';
+                    
+                    // 处理来源
+                    let contentHtml = '';
+                    let sourceBadgeHtml = '';
+                    
+                    if (item.sources && item.sources.length > 0) {
+                        if (item.sources.length === 1) {
+                            const source = item.sources[0];
+                            const tooltipText = formatSourceTooltip(source);
+                            
+                            let badgeParts = [];
+                            if (source.platform) badgeParts.push(source.platform);
+                            if (source.quality) badgeParts.push(source.quality);
+                            const badgeText = badgeParts.join('·');
+                            
+                            contentHtml = `
+                                <a href="${escapeHtml(source.link)}" 
+                                   target="_blank" 
+                                   class="detail-link source-tooltip" 
+                                   data-tooltip="${escapeHtml(tooltipText)}">
+                                    ${escapeHtml(item.text)}
+                                </a>
+                            `;
+                            
+                            if (badgeText) {
+                                sourceBadgeHtml = `<span class="source-badge-plain">${badgeText}</span>`;
+                            }
+                        } else {
+                            const displayText = formatMultipleSources(item.sources);
+                            const sourcesJson = safeJsonStringify(item.sources);
+                            contentHtml = `
+                                <a href="javascript:void(0)" 
+                                   onclick="event.stopPropagation(); window.openDetailModal('${escapeHtml(item.text)}', '${sourcesJson}')"
+                                   style="cursor: pointer; color: #0066cc; border-bottom: 1px dotted #99b5dd;">
+                                    ${escapeHtml(item.text)}
+                                </a>
+                            `;
+                            sourceBadgeHtml = `
+                                <span class="source-multi-badge" 
+                                      onclick="event.stopPropagation(); window.openDetailModal('${escapeHtml(item.text)}', '${sourcesJson}')">
+                                    ${displayText}
+                                </span>
+                            `;
+                        }
+                    } else {
+                        contentHtml = `<span style="color: #1d2b3f;">${escapeHtml(item.text)}</span>`;
+                    }
+                    
+                    html += `
+                        <div class="detail-item">
+                            <span class="item-index">${idxStr}</span>
+                            <div class="item-content">
+                                <div style="display: flex; align-items: center; gap: 8px; flex-wrap: wrap;">
+                                    ${contentHtml}
+                                </div>
+                                <div class="item-meta">
+                                    <span class="item-date-badge">📅 ${item.displayDate}</span>
+                                    ${timeHtml}
+                                    ${sourceBadgeHtml}
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                });
+                html += '</div>';
+            }
             
             html += '</div>';
             calendarLeft.innerHTML = html;
-            
-            document.querySelectorAll('.month-card').forEach(card => {
-                card.addEventListener('click', function() {
-                    const year = this.getAttribute('data-year');
-                    const month = this.getAttribute('data-month');
-                    
-                    yearFilter.value = year;
-                    monthFilter.value = month;
-                    selectedYear = year;
-                    selectedMonth = month;
-                    
-                    renderDetailList();
-                    renderCalendar();
-                });
-            });
         }
 
         // 渲染月历
@@ -2792,14 +2990,11 @@
                                 const idxStr = String(idx + 1).padStart(2, '0');
                                 const timeHtml = item.time ? `<span class="item-time">${item.time}</span>` : '';
                                 
-                                // 判断是否有图片 - 统一使用新的图片样式
                                 if (item.images && item.images.length > 0 || item.image) {
-                                    // 获取第一张图片
                                     const firstImage = item.images ? item.images[0] : item.image;
                                     const imagesJson = item.images ? safeJsonStringify(item.images) : (item.image ? safeJsonStringify([item.image]) : null);
                                     const imageCount = item.images ? item.images.length : 1;
                                     
-                                    // 处理来源
                                     let titleContent = '';
                                     let sourceBadgeHtml = '';
                                     
@@ -2846,7 +3041,6 @@
                                         titleContent = `<span style="color: #1d2b3f;">${escapeHtml(item.text)}</span>`;
                                     }
                                     
-                                    // 图片数量标识 - 只有多张图片才显示
                                     const countBadge = imageCount > 1 ? `<span class="image-count-badge">📷 ${imageCount}</span>` : '';
                                     
                                     html += `
@@ -2867,7 +3061,6 @@
                                         </div>
                                     `;
                                 } else {
-                                    // 无图片
                                     let contentHtml = '';
                                     let sourceBadgeHtml = '';
                                     
@@ -2951,13 +3144,17 @@
                 calendarLeft.innerHTML = '';
             } else {
                 filterBar.style.display = 'flex';
+                
                 if (selectedYear === 'all' && selectedMonth === 'all') {
+                    // 全部年份和月份：隐藏日历，右边显示全部动态
                     mainPanel.classList.add('calendar-hidden');
                     calendarLeft.innerHTML = '';
                 } else if (selectedYear !== 'all' && selectedMonth === 'all') {
-                    mainPanel.classList.remove('calendar-hidden');
-                    renderYearCalendar(parseInt(selectedYear));
+                    // 只选了年份：隐藏日历，右边显示全年动态
+                    mainPanel.classList.add('calendar-hidden');
+                    calendarLeft.innerHTML = '';
                 } else if (selectedYear !== 'all' && selectedMonth !== 'all') {
+                    // 选了年份和月份：显示月历
                     mainPanel.classList.remove('calendar-hidden');
                     renderMonthCalendar();
                 } else {
@@ -2982,34 +3179,27 @@
         yearFilter.addEventListener('change', function() {
             selectedYear = this.value;
             
-            const { monthsByYear } = getAvailableYearsMonths();
+            // 新增：如果只选了年，自动把月份设为 all
+            if (selectedYear !== 'all') {
+            selectedMonth = 'all';
+            monthFilter.value = 'all';
+        }
+
+            // 更新月份下拉框
+            initMonthSelect();
             
-            if (selectedYear === 'all') {
-                const allMonths = new Set();
-                Object.values(monthsByYear).forEach(months => {
-                    months.forEach(m => allMonths.add(m));
-                });
-                
-                let monthOptions = '<option value="all">全部月份</option>';
-                Array.from(allMonths).sort((a, b) => a - b).forEach(month => {
-                    monthOptions += `<option value="${month}">${month}月</option>`;
-                });
-                monthFilter.innerHTML = monthOptions;
-                
-                selectedMonth = 'all';
-                monthFilter.value = 'all';
+            // 如果年份不是all，且月份是all，则清空日选择
+            if (selectedYear !== 'all') {
+                if (selectedMonth === 'all') {
+                    dayFilter.innerHTML = '<option value="all">全部日期</option>';
+                    dayFilter.value = 'all';
+                    selectedDay = 'all';
+                } else {
+                    initDaySelect();
+                }
             } else {
-                const availableMonths = monthsByYear[parseInt(selectedYear)] || new Set();
-                
-                let monthOptions = '<option value="all">全部月份</option>';
-                Array.from(availableMonths).sort((a, b) => a - b).forEach(month => {
-                    monthOptions += `<option value="${month}">${month}月</option>`;
-                });
-                monthFilter.innerHTML = monthOptions;
-                
-                const firstMonth = Array.from(availableMonths).sort((a, b) => a - b)[0];
-                selectedMonth = firstMonth ? String(firstMonth) : 'all';
-                monthFilter.value = selectedMonth;
+                // 年份是all时，月份更新后日也要更新
+                initDaySelect();
             }
             
             renderDetailList();
@@ -3018,10 +3208,22 @@
 
         monthFilter.addEventListener('change', function() {
             selectedMonth = this.value;
+            
+            // 如果月份不是all，且年份是all，自动选择最近的年份
             if (selectedMonth !== 'all' && selectedYear === 'all') {
                 selectedYear = String(defaultYear);
                 yearFilter.value = String(defaultYear);
             }
+            
+            // 更新日下拉框
+            initDaySelect();
+            
+            renderDetailList();
+            renderCalendar();
+        });
+
+        dayFilter.addEventListener('change', function() {
+            selectedDay = this.value;
             renderDetailList();
             renderCalendar();
         });
@@ -3033,8 +3235,11 @@
             
             selectedYear = 'all';
             selectedMonth = 'all';
+            selectedDay = 'all';
             yearFilter.value = 'all';
-            monthFilter.value = 'all';
+            
+            initMonthSelect();
+            initDaySelect();
             
             renderDetailList();
             renderCalendar();
@@ -3043,25 +3248,38 @@
         todayBtn.addEventListener('click', function() {
             selectedYear = String(currentYear);
             selectedMonth = String(currentMonth);
+            selectedDay = String(currentDay);
             
             yearFilter.value = String(currentYear);
             
-            const { monthsByYear } = getAvailableYearsMonths();
+            const { monthsByYear, daysByYearMonth } = getAvailableYearsMonths();
             
             if (monthsByYear[currentYear] && monthsByYear[currentYear].size > 0) {
-                const availableMonths = monthsByYear[currentYear];
+                // 更新月份下拉框
                 let monthOptions = '<option value="all">全部月份</option>';
-                Array.from(availableMonths).sort((a, b) => a - b).forEach(month => {
+                Array.from(monthsByYear[currentYear]).sort((a, b) => a - b).forEach(month => {
                     monthOptions += `<option value="${month}" ${month === currentMonth ? 'selected' : ''}>${month}月</option>`;
                 });
                 monthFilter.innerHTML = monthOptions;
                 monthFilter.value = String(currentMonth);
+                
+                // 更新日下拉框
+                if (daysByYearMonth[currentYear] && daysByYearMonth[currentYear][currentMonth]) {
+                    let dayOptions = '<option value="all">全部日期</option>';
+                    Array.from(daysByYearMonth[currentYear][currentMonth]).sort((a, b) => a - b).forEach(day => {
+                        dayOptions += `<option value="${day}" ${day === currentDay ? 'selected' : ''}>${day}日</option>`;
+                    });
+                    dayFilter.innerHTML = dayOptions;
+                    dayFilter.value = String(currentDay);
+                }
             } else {
-                const nearest = findNearestAvailableDate(currentYear, currentMonth);
+                const nearest = findNearestAvailableDate(currentYear, currentMonth, currentDay);
                 selectedYear = String(nearest.year);
                 selectedMonth = String(nearest.month);
+                selectedDay = String(nearest.day);
                 yearFilter.value = String(nearest.year);
                 
+                // 更新月份
                 const nearestMonths = monthsByYear[nearest.year] || new Set([nearest.month]);
                 let monthOptions = '<option value="all">全部月份</option>';
                 Array.from(nearestMonths).sort((a, b) => a - b).forEach(month => {
@@ -3069,6 +3287,15 @@
                 });
                 monthFilter.innerHTML = monthOptions;
                 monthFilter.value = String(nearest.month);
+                
+                // 更新日
+                const nearestDays = daysByYearMonth[nearest.year]?.[nearest.month] || new Set([nearest.day]);
+                let dayOptions = '<option value="all">全部日期</option>';
+                Array.from(nearestDays).sort((a, b) => a - b).forEach(day => {
+                    dayOptions += `<option value="${day}" ${day === nearest.day ? 'selected' : ''}>${day}日</option>`;
+                });
+                dayFilter.innerHTML = dayOptions;
+                dayFilter.value = String(nearest.day);
             }
             
             renderDetailList();
