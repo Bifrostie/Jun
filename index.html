@@ -1,0 +1,3085 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>林孝埈 · Lin Xiaojun</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', 'PingFang SC', Roboto, system-ui, sans-serif;
+        }
+
+        body {
+            background-color: #f0f2f5;
+            display: flex;
+            justify-content: center;
+            padding: 30px 20px;
+        }
+
+        .calendar-page {
+            max-width: 1400px;
+            width: 100%;
+            background-color: #ffffff;
+            border-radius: 32px;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.15);
+            padding: 28px 30px;
+        }
+
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+        .header h1 {
+            font-size: 28px;
+            font-weight: 600;
+            color: #1a1f2e;
+            letter-spacing: 0.5px;
+        }
+        .header h1 span {
+            font-weight: 400;
+            color: #5b677b;
+            margin-left: 4px;
+        }
+        .header-tip {
+            background-color: #f2f4f8;
+            padding: 8px 18px;
+            border-radius: 40px;
+            font-size: 14px;
+            color: #4a5568;
+            border: 1px solid #dfe4ea;
+        }
+        .header-tip a {
+            color: #2d6ff7;
+            text-decoration: none;
+            border-bottom: 1px dotted #a0b8e0;
+        }
+
+        .nav-tabs {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px 14px;
+            margin: 25px 0 20px 0;
+            padding-bottom: 20px;
+            border-bottom: 2px solid #eef2f6;
+        }
+        .nav-tab {
+            padding: 8px 22px;
+            background-color: #f1f4f9;
+            border-radius: 40px;
+            font-size: 15px;
+            font-weight: 500;
+            color: #2d3a4f;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            border: 1px solid transparent;
+        }
+        .nav-tab:hover {
+            background-color: #e3e8f0;
+        }
+        .nav-tab.active {
+            background-color: #1e2b3c;
+            color: white;
+            border-color: #1e2b3c;
+        }
+
+        .filter-bar {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+            background-color: #f8fafd;
+            padding: 12px 20px;
+            border-radius: 50px;
+            border: 1px solid #e2e8f0;
+        }
+        .filter-label {
+            font-size: 14px;
+            font-weight: 600;
+            color: #2d4055;
+            margin-right: 5px;
+        }
+        .filter-select-group {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+        .filter-item {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            background-color: white;
+            padding: 5px 16px 5px 20px;
+            border-radius: 40px;
+            border: 1px solid #d0ddee;
+        }
+        .filter-item label {
+            font-size: 14px;
+            font-weight: 500;
+            color: #4a6380;
+        }
+        .filter-item select {
+            border: none;
+            background: transparent;
+            font-size: 14px;
+            font-weight: 500;
+            color: #111827;
+            padding: 6px 5px;
+            cursor: pointer;
+            outline: none;
+            min-width: 85px;
+        }
+        .filter-item select:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            background-color: #f0f3f8;
+        }
+        .clear-filter {
+            background-color: #eef2f6;
+            border: none;
+            padding: 6px 18px;
+            border-radius: 40px;
+            font-size: 13px;
+            font-weight: 500;
+            color: #4a5a70;
+            cursor: pointer;
+        }
+        .clear-filter:hover {
+            background-color: #dce3ec;
+        }
+        .button-group {
+            display: flex;
+            gap: 10px;
+            margin-left: auto;
+        }
+
+        .main-panel {
+            display: flex;
+            gap: 25px;
+            margin-top: 5px;
+            transition: all 0.3s ease;
+        }
+        .main-panel.calendar-hidden .calendar-left {
+            display: none;
+        }
+        .main-panel.calendar-hidden .detail-right {
+            flex: 1;
+        }
+
+        .calendar-left {
+            flex: 0 0 65%;
+            min-width: 0;
+            transition: all 0.3s ease;
+        }
+
+        .detail-right {
+            flex: 0 0 35%;
+            background-color: #f9fbfe;
+            border-radius: 24px;
+            border: 1px solid #eef2f8;
+            padding: 20px 15px;
+            max-height: 650px;
+            overflow-y: auto;
+            transition: all 0.3s ease;
+        }
+        .detail-right h3 {
+            font-size: 18px;
+            font-weight: 600;
+            color: #1f2a3f;
+            padding-bottom: 15px;
+            border-bottom: 2px solid #e2e8f0;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .detail-right h3 span {
+            background-color: #1e2b3c;
+            color: white;
+            font-size: 13px;
+            padding: 3px 10px;
+            border-radius: 30px;
+        }
+
+        .week-row {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            text-align: center;
+            background-color: #f3f7fd;
+            padding: 12px 0;
+            border-radius: 30px;
+            margin-bottom: 15px;
+            border: 1px solid #e6ecf3;
+            font-weight: 500;
+            color: #4b5a72;
+        }
+
+        .dates-grid {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            gap: 8px;
+        }
+
+        .date-cell {
+            background-color: #f9fbfd;
+            border: 1px solid #eef2f6;
+            border-radius: 18px;
+            padding: 10px 6px 6px 6px;
+            min-height: 140px;
+            max-height: 140px;
+            height: 140px;
+            cursor: pointer;
+            transition: all 0.15s;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+
+        .date-cell:hover {
+            background-color: #f0f5fd;
+            border-color: #bdd0e8;
+        }
+
+        .date-cell.selected {
+            background-color: #eaf1fb;
+            border: 2px solid #1e2b3c;
+            box-shadow: 0 6px 12px rgba(0,40,80,0.08);
+        }
+
+        .date-cell.empty {
+            background-color: #f3f6fa;
+            border-color: #e2e8f0;
+            opacity: 0.7;
+            pointer-events: none;
+        }
+
+        .date-cell.other-month {
+            background-color: #f3f6fa;
+            border-color: #e2e8f0;
+            opacity: 0.7;
+            pointer-events: none;
+        }
+
+        .day-num {
+            font-weight: 600;
+            font-size: 15px;
+            color: #1e2e44;
+            margin-bottom: 6px;
+            padding-left: 4px;
+            flex-shrink: 0;
+        }
+
+        .event-tags {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+            flex: 1;
+            overflow-y: auto;
+            padding-right: 4px;
+        }
+
+        .event-tags::-webkit-scrollbar {
+            width: 4px;
+        }
+
+        .event-tags::-webkit-scrollbar-track {
+            background: #f1f1f1;
+            border-radius: 4px;
+        }
+
+        .event-tags::-webkit-scrollbar-thumb {
+            background: #c1c9d5;
+            border-radius: 4px;
+        }
+
+        .event-tags::-webkit-scrollbar-thumb:hover {
+            background: #a0b0c0;
+        }
+
+        .event-tag {
+            background-color: white;
+            border: 1px solid #d2deeb;
+            border-radius: 40px;
+            padding: 4px 8px;
+            font-size: 11px;
+            font-weight: 500;
+            color: #2e405b;
+            display: inline-block;
+            align-self: flex-start;
+            max-width: 100%;
+            white-space: normal;
+            word-break: break-word;
+            line-height: 1.3;
+            flex-shrink: 0;
+        }
+
+        /* 6种淡雅配色 - 对应6个分类 */
+        .event-tag.type-race { background-color: #e6f0fa; border-color: #b8d0e8; }
+        .event-tag.type-interview { background-color: #fae6e6; border-color: #e8b8b8; }
+        .event-tag.type-activity { background-color: #faf0e6; border-color: #e8d0b8; }
+        .event-tag.type-sns { background-color: #e5f2ee; border-color: #bfded2; }
+        .event-tag.type-record { background-color: #f2eefa; border-color: #dacef0; }
+        .event-tag.type-treasure { background-color: #fafae6; border-color: #e8e8b8; }
+
+        /* 安利百宝箱专属样式 */
+        .treasure-box {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            padding: 5px;
+        }
+        
+        .treasure-card {
+            background: linear-gradient(145deg, #fff9f0, #fff2e5);
+            border-radius: 24px;
+            padding: 20px;
+            box-shadow: 0 4px 12px rgba(255, 200, 150, 0.15);
+            transition: transform 0.2s, box-shadow 0.2s;
+            border: 1px solid #ffd8b5;
+        }
+        
+        .treasure-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 24px rgba(255, 170, 100, 0.2);
+        }
+        
+        .treasure-card .date-badge {
+            display: inline-block;
+            background: rgba(255, 220, 180, 0.5);
+            padding: 4px 12px;
+            border-radius: 30px;
+            font-size: 12px;
+            color: #b45f3a;
+            margin-bottom: 12px;
+            font-weight: 500;
+        }
+        
+        .treasure-card .title {
+            font-size: 18px;
+            font-weight: 600;
+            color: #8b4e2a;
+            margin-bottom: 10px;
+            line-height: 1.4;
+        }
+        
+        .treasure-card .description {
+            font-size: 14px;
+            color: #b47b5a;
+            line-height: 1.7;
+            margin-bottom: 16px;
+        }
+        
+        .treasure-card .link {
+            color: #d48c5c;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 14px;
+            border-bottom: 1px dotted #ffb080;
+            display: inline-block;
+            margin-top: 8px;
+            padding-bottom: 2px;
+        }
+        
+        .treasure-card .link:hover {
+            color: #b45f3a;
+            border-bottom: 1px solid #b45f3a;
+        }
+        
+        .treasure-card .image-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 10px;
+            margin: 16px 0 10px;
+        }
+        
+        .treasure-card .image-item {
+            aspect-ratio: 1;
+            border-radius: 16px;
+            overflow: hidden;
+            cursor: pointer;
+            border: 1px solid #ffd8b5;
+            background-color: #fff0e0;
+            transition: transform 0.2s;
+        }
+        
+        .treasure-card .image-item:hover {
+            transform: scale(1.03);
+        }
+        
+        .treasure-card .image-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        
+        .treasure-card .meta-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 15px;
+            padding-top: 12px;
+            border-top: 1px dashed #ffd8b5;
+            font-size: 13px;
+            color: #b48a6a;
+        }
+
+        .year-calendar {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+            padding: 10px;
+        }
+        .month-card {
+            background-color: #f9fbfd;
+            border: 1px solid #eef2f6;
+            border-radius: 20px;
+            padding: 15px 12px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        .month-card:hover {
+            background-color: #f0f5fd;
+            border-color: #bdd0e8;
+            transform: translateY(-2px);
+            box-shadow: 0 8px 16px rgba(0,0,0,0.05);
+        }
+        .month-card h4 {
+            font-size: 16px;
+            font-weight: 600;
+            color: #1e2e44;
+            margin-bottom: 12px;
+            padding-bottom: 8px;
+            border-bottom: 2px solid #e2eaf2;
+        }
+        .month-preview {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            gap: 3px;
+            font-size: 10px;
+            color: #5e6f84;
+            margin-bottom: 8px;
+        }
+        .preview-weekday {
+            text-align: center;
+            font-weight: 500;
+            color: #7f8fa0;
+        }
+        .preview-days {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            gap: 3px;
+        }
+        .preview-day {
+            aspect-ratio: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 9px;
+            background-color: white;
+            border-radius: 4px;
+            border: 1px solid #edf2f7;
+        }
+        .preview-day.has-event {
+            background-color: #e5f0ff;
+            border-color: #b8d1f0;
+            font-weight: 600;
+            color: #1e4f9e;
+        }
+        .month-stats {
+            margin-top: 10px;
+            font-size: 11px;
+            color: #5d738e;
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .detail-list {
+            width: 100%;
+        }
+
+        /* ===== 统一图片样式 - 缩略图在最右边 ===== */
+        .detail-item.with-image-uniform {
+            display: flex;
+            align-items: flex-start;
+            gap: 16px;
+            padding: 12px;
+            border-radius: 16px;
+            background-color: #f8fafd;
+            border: 1px solid #eef2f8;
+            margin-bottom: 10px;
+        }
+
+        .detail-item.with-image-uniform .item-index {
+            color: #2d6ff7;
+            font-weight: 600;
+            min-width: 40px;
+            font-size: 15px;
+            flex-shrink: 0;
+        }
+
+        .detail-item.with-image-uniform .item-content-main {
+            flex: 1;
+            min-width: 0;
+        }
+
+        .detail-item.with-image-uniform .item-image-wrapper {
+            position: relative;
+            width: 80px;
+            height: 80px;
+            flex-shrink: 0;
+            margin-left: auto;
+            cursor: pointer;
+            border-radius: 12px;
+            overflow: hidden;
+            border: 1px solid #e2e8f0;
+            background-color: #f1f5f9;
+            transition: transform 0.2s;
+        }
+
+        .detail-item.with-image-uniform .item-image-wrapper:hover {
+            transform: scale(1.05);
+        }
+
+        .detail-item.with-image-uniform .item-image-wrapper img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .image-count-badge {
+            position: absolute;
+            bottom: 4px;
+            right: 4px;
+            background-color: rgba(0, 0, 0, 0.6);
+            color: white;
+            font-size: 11px;
+            padding: 2px 6px;
+            border-radius: 12px;
+            backdrop-filter: blur(2px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            z-index: 2;
+            font-weight: 500;
+            line-height: 1.2;
+        }
+
+        /* 无图片项样式 */
+        .detail-item:not(.with-image-uniform) {
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+            padding: 14px 10px;
+            border-bottom: 1px solid #eef2f8;
+            font-size: 14px;
+        }
+        .detail-item:not(.with-image-uniform):last-child {
+            border-bottom: none;
+        }
+        
+        .item-index {
+            color: #2d6ff7;
+            font-weight: 600;
+            min-width: 40px;
+            font-size: 15px;
+            flex-shrink: 0;
+        }
+        
+        .item-content {
+            flex: 1;
+            color: #1d2b3f;
+            line-height: 1.5;
+        }
+        
+        .item-content a {
+            color: #0066cc;
+            text-decoration: none;
+            border-bottom: 1px dotted #99b5dd;
+            cursor: pointer;
+            font-weight: 500;
+        }
+        
+        .item-content a:hover {
+            border-bottom: 1px solid #0066cc;
+            color: #004999;
+        }
+        
+        /* 日期行样式 - 统一放置所有标识 */
+        .item-meta {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-top: 4px;
+            font-size: 12px;
+            color: #7f8fa0;
+            flex-wrap: wrap;
+        }
+        
+        .item-date-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            background-color: #edf2f9;
+            padding: 2px 10px;
+            border-radius: 30px;
+            color: #4a5e7a;
+        }
+        
+        .item-time {
+            color: #6b7c94;
+            font-size: 13px;
+            white-space: nowrap;
+        }
+
+        .no-data {
+            color: #8e9db0;
+            text-align: center;
+            padding: 40px 0;
+            font-size: 14px;
+        }
+
+        .footer-note {
+            margin-top: 30px;
+            text-align: right;
+            color: #8b9ab0;
+            font-size: 13px;
+            border-top: 1px dashed #dce3ec;
+            padding-top: 18px;
+        }
+        .footer-note span {
+            background-color: #f0f4fa;
+            padding: 4px 14px;
+            border-radius: 40px;
+        }
+
+        /* 详情弹窗样式 */
+        .detail-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.7);
+            z-index: 2000;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .detail-modal.active {
+            display: flex;
+        }
+
+        .detail-modal-content {
+            background-color: white;
+            border-radius: 24px;
+            max-width: 500px;
+            width: 90%;
+            max-height: 80vh;
+            overflow-y: auto;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+        }
+
+        .detail-modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 24px;
+            border-bottom: 2px solid #eef2f6;
+        }
+
+        .detail-modal-header h3 {
+            font-size: 18px;
+            font-weight: 600;
+            color: #1f2a3f;
+            margin: 0;
+        }
+
+        .detail-modal-close {
+            font-size: 28px;
+            color: #8e9db0;
+            cursor: pointer;
+            line-height: 1;
+        }
+
+        .detail-modal-close:hover {
+            color: #1e2b3c;
+        }
+
+        .detail-modal-body {
+            padding: 20px 24px;
+        }
+
+        .source-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .source-item {
+            margin-bottom: 12px;
+            border-radius: 16px;
+            background-color: #f8fafd;
+            border: 1px solid #eef2f8;
+            transition: all 0.2s;
+        }
+
+        .source-item:hover {
+            background-color: #f0f5fd;
+            border-color: #bdd0e8;
+            transform: translateX(4px);
+        }
+
+        .source-link {
+            display: flex;
+            align-items: center;
+            padding: 16px 20px;
+            text-decoration: none;
+            color: #1d2b3f;
+        }
+
+        .source-icon {
+            font-size: 24px;
+            margin-right: 16px;
+            min-width: 32px;
+            text-align: center;
+        }
+
+        .source-info {
+            flex: 1;
+        }
+
+        .source-title {
+            font-weight: 600;
+            font-size: 15px;
+            margin-bottom: 4px;
+            color: #1e2e44;
+        }
+
+        .source-meta {
+            font-size: 12px;
+            color: #7f8fa0;
+            display: flex;
+            gap: 16px;
+        }
+
+        .source-arrow {
+            color: #2d6ff7;
+            font-size: 20px;
+            margin-left: 12px;
+        }
+
+        /* ===== 来源标识样式 ===== */
+        /* 单来源纯展示标识 */
+        .source-badge-plain {
+            background-color: #f0f4fa;
+            padding: 2px 8px;
+            border-radius: 20px;
+            font-size: 11px;
+            color: #4f6b8a;
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            border: 1px solid #dde3ec;
+            white-space: nowrap;
+        }
+
+        /* 多来源可点击标识 */
+        .source-multi-badge {
+            background-color: #eef2f8;
+            padding: 3px 10px;
+            border-radius: 30px;
+            font-size: 11px;
+            color: #2d4b7a;
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            border: 1px solid #d0ddee;
+            cursor: pointer;
+            transition: all 0.2s;
+            font-weight: 500;
+            letter-spacing: 0.2px;
+            white-space: nowrap;
+        }
+
+        .source-multi-badge:hover {
+            background-color: #e2e8f0;
+            border-color: #a0b8d0;
+            transform: translateX(2px);
+        }
+
+        /* 标题的tooltip样式 */
+        .source-tooltip {
+            position: relative;
+            border-bottom: 1px dotted #99b5dd;
+            cursor: help;
+        }
+
+        .source-tooltip:hover::after {
+            content: attr(data-tooltip);
+            position: absolute;
+            bottom: 100%;
+            left: 50%;
+            transform: translateX(-50%);
+            background-color: #1e2b3c;
+            color: white;
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            white-space: nowrap;
+            z-index: 1000;
+            margin-bottom: 8px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+            pointer-events: none;
+        }
+
+        .source-tooltip:hover::before {
+            content: '';
+            position: absolute;
+            bottom: 100%;
+            left: 50%;
+            transform: translateX(-50%);
+            border: 6px solid transparent;
+            border-top-color: #1e2b3c;
+            margin-bottom: -4px;
+            pointer-events: none;
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.9);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+        }
+        .modal.active {
+            display: flex;
+        }
+        .modal-content {
+            max-width: 90%;
+            max-height: 90%;
+            position: relative;
+        }
+        .modal-content img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+        }
+        .modal-close {
+            position: absolute;
+            top: 20px;
+            right: 30px;
+            color: white;
+            font-size: 40px;
+            cursor: pointer;
+            z-index: 1001;
+        }
+        .modal-prev, .modal-next {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            color: white;
+            font-size: 40px;
+            cursor: pointer;
+            padding: 20px;
+            user-select: none;
+        }
+        .modal-prev {
+            left: 20px;
+        }
+        .modal-next {
+            right: 20px;
+        }
+        .modal-prev:hover, .modal-next:hover {
+            color: #0066cc;
+        }
+
+        @media (max-width: 1000px) {
+            .main-panel { flex-direction: column; }
+            .calendar-left, .detail-right { flex: auto; }
+            .filter-bar { flex-direction: column; align-items: flex-start; }
+            .button-group { margin-left: 0; }
+            .year-calendar { grid-template-columns: repeat(2, 1fr); }
+            .detail-item.with-image-uniform {
+                flex-wrap: wrap;
+            }
+        }
+    </style>
+</head>
+<body>
+<div class="calendar-page">
+    <div class="header">
+        <h1>林孝埈<span> · Lin Xiaojun</span></h1>
+        <div class="header-tip">📌 安利不受年月限制 · <a href="#">私信捉虫</a></div>
+    </div>
+
+    <!-- 分类导航 -->
+    <div class="nav-tabs" id="categoryTabs">
+        <span class="nav-tab active" data-category="all">📋 全部动态</span>
+        <span class="nav-tab" data-category="race">🏆 比赛</span>
+        <span class="nav-tab" data-category="interview">🎤 采访</span>
+        <span class="nav-tab" data-category="activity">📸 活动</span>
+        <span class="nav-tab" data-category="sns">💬 SNS</span>
+        <span class="nav-tab" data-category="record">📌 记录</span>
+        <span class="nav-tab" data-category="treasure">💗 安利</span>
+    </div>
+
+    <!-- 筛选栏 -->
+    <div class="filter-bar" id="filterBar">
+        <span class="filter-label">🔍 筛选：</span>
+        <div class="filter-select-group">
+            <div class="filter-item">
+                <label for="yearFilter">年</label>
+                <select id="yearFilter">
+                    <option value="all">全部年份</option>
+                </select>
+            </div>
+            <div class="filter-item">
+                <label for="monthFilter">月</label>
+                <select id="monthFilter">
+                    <option value="all">全部月份</option>
+                </select>
+            </div>
+        </div>
+        <div class="button-group">
+            <button class="clear-filter" id="todayBtn">📅 今天</button>
+            <button class="clear-filter" id="clearFilterBtn">清除筛选</button>
+        </div>
+    </div>
+
+    <div class="main-panel" id="mainPanel">
+        <div class="calendar-left" id="calendarLeft"></div>
+        <div class="detail-right" id="detailPanel">
+            <h3 id="detailTitle">📋 全部动态 <span>0条</span></h3>
+            <div class="detail-list" id="detailList">
+                <div class="no-data">⏳ 加载中...</div>
+            </div>
+        </div>
+    </div>
+
+    <div class="footer-note">
+        <span>🐾 猫言猫语：安利不受年月限制 · 点击链接直接跳转</span>
+    </div>
+</div>
+
+<!-- 图片查看模态框 -->
+<div class="modal" id="imageModal">
+    <span class="modal-close" id="modalClose">&times;</span>
+    <span class="modal-prev" id="modalPrev">&#10094;</span>
+    <span class="modal-next" id="modalNext">&#10095;</span>
+    <div class="modal-content" id="modalContent">
+        <img id="modalImage" src="" alt="">
+    </div>
+</div>
+
+<!-- 详情弹窗 -->
+<div class="detail-modal" id="detailModal">
+    <div class="detail-modal-content">
+        <div class="detail-modal-header">
+            <h3 id="detailModalTitle"></h3>
+            <span class="detail-modal-close" id="detailModalClose">&times;</span>
+        </div>
+        <div class="detail-modal-body" id="detailModalBody">
+            <!-- 链接列表会动态生成 -->
+        </div>
+    </div>
+</div>
+
+<script>
+    (function() {
+        // ========== 1. 普通动态数据（受年月限制）- 已修改为sources数组格式 ==========
+        const allData = {
+            // ==================== 2008年 ====================
+            '2008-10-23': {
+                tags: [
+                    { text: '🏆 第11届希望之星锦标赛', type: 'type-race', category: 'race' }
+                ],
+                details: [
+                    { 
+                        text: '🏆 第11届希望之星锦标赛 500m 半决赛 第2名', 
+                        sources: [{ title: '第11届希望之星锦标赛 500m 半决赛 第2名', link: 'https://weibo.com/7832568510/5016315979107959', platform: 'Weibo', author: '-Bifröst-' }],
+                        categories: ['race'] 
+                    },
+                    { 
+                        text: '🏆 第11届希望之星锦标赛 500m FA 第1名', 
+                        sources: [{ title: '微博 完整版', link: 'https://weibo.com/7832568510/5016313530945970', platform: 'Weibo' }],
+                        categories: ['race'] 
+                    }
+                ]
+            },
+            '2008-10-24': {
+                tags: [
+                    { text: '🏆 第11届希望之星锦标赛', type: 'type-race', category: 'race' }
+                ],
+                details: [
+                    { 
+                        text: '🏆 第11届希望之星锦标赛 1000m 半决赛 第1名', 
+                        sources: [{ title: '微博 完整版', link: 'https://weibo.com/7832568510/5016328692040058', platform: 'Weibo' }],
+                        categories: ['race'] 
+                    },
+                    { 
+                        text: '🏆 第11届希望之星锦标赛 1000mS.F FA 第1名', 
+                        sources: [{ title: '微博 完整版', link: 'https://weibo.com/7832568510/5016320871500126', platform: 'Weibo' }],
+                        categories: ['race'] 
+                    }
+                ]
+            },
+            '2008-11-29': {
+                tags: [
+                    { text: '🏆 第24届全国男女综合短道速滑锦标赛', type: 'type-race', category: 'race' }
+                ],
+                details: [
+                    { 
+                        text: '💗 第24届会长杯全国男女短道速滑比赛(男小组4-6年级) 1000m FA 第1名', 
+                        sources: [{ title: '微博 完整版', link: 'https://weibo.com/7832568510/5017243979092707', platform: 'Weibo' }],
+                        categories: ['race'] 
+                    }
+                ]
+            },
+
+            // ==================== 2009年 ====================
+            '2009-02-10': {
+                tags: [
+                    { text: '🏆 第90届全国冬季运动会', type: 'type-race', category: 'race' }
+                ],
+                details: [
+                    { 
+                        text: '🏆 第90届全国冬季运动会(男小组) 2000m接力 半决赛 第2名', 
+                        sources: [{ title: '微博 完整版', link: 'https://weibo.com/7832568510/5017250134493711', platform: 'Weibo' }],
+                        categories: ['race'] 
+                    }
+                ]
+            },
+            '2009-02-11': {
+                tags: [
+                    { text: '🏆 第90届全国冬季运动会', type: 'type-race', category: 'race' }
+                ],
+                details: [
+                    { 
+                        text: '💗 第90届全国冬季运动会(男小组) 2000m 1/4决赛 第1名', 
+                        sources: [{ title: '微博 完整版', link: 'https://weibo.com/7832568510/5006062077351163', platform: 'Weibo' }],
+                        categories: ['race'] 
+                    }
+                ]
+            },
+            '2009-03-07': {
+                tags: [
+                    { text: '🏆 第4届城南市长杯全国男女初高中大赛', type: 'type-race', category: 'race' }
+                ],
+                details: [
+                    { 
+                        text: '🏆 第4届城南市长杯全国男女初高中大赛 1500m FA 第4名', 
+                        sources: [{ title: '微博 完整版', link: 'https://weibo.com/7832568510/5017259615191080', platform: 'Weibo' }],
+                        categories: ['race'] 
+                    }
+                ]
+            },
+            '2009-03-22': {
+                tags: [
+                    { text: '🏆 第23届全国男女学生全能锦标赛', type: 'type-race', category: 'race' }
+                ],
+                details: [
+                    { 
+                        text: '🏆 第23届全国男女学生全能锦标赛 3000mS.F FA 第5名', 
+                        sources: [{ title: '微博 完整版', link: 'https://weibo.com/7832568510/5017265644767900', platform: 'Weibo' }],
+                        categories: ['race'] 
+                    }
+                ]
+            },
+            '2009-10-24': {
+                tags: [
+                    { text: '🏆 第26届全国男女短道速滑比赛', type: 'type-race', category: 'race' }
+                ],
+                details: [
+                    { 
+                        text: '🏆 第26届全国男女短道速滑比赛 1500m 半决赛 PEN', 
+                        sources: [{ title: '微博 完整版', link: 'https://weibo.com/7832568510/5017273463210364', platform: 'Weibo' }],
+                        categories: ['race'] 
+                    }
+                ]
+            },
+            '2009-10-25': {
+                tags: [
+                    { text: '🏆 第26届全国男女短道速滑比赛', type: 'type-race', category: 'race' }
+                ],
+                details: [
+                    { 
+                        text: '🏆 第26届全国男女短道速滑比赛 3000m FA 第6名', 
+                        sources: [{ title: '微博 完整版', link: 'https://weibo.com/7832568510/5017285230331770', platform: 'Weibo' }],
+                        categories: ['race'] 
+                    }
+                ]
+            },
+
+            // ==================== 2011年 ====================
+            '2011-03-25': {
+                tags: [
+                    { text: '🏆 第25届全国男女综合短道速滑锦标赛', type: 'type-race', category: 'race' }
+                ],
+                details: [
+                    { 
+                        text: '🏆 第25届全国男女综合短道速滑锦标赛(男中组) 1500m FA 第1名', 
+                        sources: [{ title: '微博 完整版', link: 'https://weibo.com/7832568510/5006065725085031', platform: 'Weibo' }],
+                        categories: ['race'] 
+                    }
+                ]
+            },
+            '2011-03-27': {
+                tags: [
+                    { text: '🏆 第25届全国男女综合短道速滑锦标赛', type: 'type-race', category: 'race' }
+                ],
+                details: [
+                    { 
+                        text: '🏆 第25届全国男女综合短道速滑锦标赛(男中组) 3000mS.F FA 第1名', 
+                        sources: [{ title: '微博 完整版', link: 'https://weibo.com/7832568510/5006069510705106', platform: 'Weibo' }],
+                        categories: ['race'] 
+                    }
+                ]
+            },
+            '2011-10-30': {
+                tags: [
+                    { text: '🏆 2012冬青奥代表选拔赛', type: 'type-race', category: 'race' }
+                ],
+                details: [
+                    { 
+                        text: '🏆 2012冬青奥代表选拔赛 1000m FA 第1名', 
+                        sources: [{ title: '微博 完整版', link: 'https://weibo.com/7832568510/5017296650634597', platform: 'Weibo' }],
+                        categories: ['race'] 
+                    },
+                    { 
+                        text: '🏆 2012冬青奥代表选拔赛 500m 半决赛 PEN', 
+                        sources: [{ title: '微博 完整版', link: 'https://weibo.com/7832568510/5017298912674578', platform: 'Weibo' }],
+                        categories: ['race'] 
+                    }
+                ]
+            },
+            '2011-11-06': {
+                tags: [
+                    { text: '🏆 第93届全国冬季运动会短道速滑首尔预选赛第一轮', type: 'type-race', category: 'race' }
+                ],
+                details: [
+                    { 
+                        text: '🏆 第93届全国冬季运动会短道速滑首尔预选赛第一轮 3000m FA PEN', 
+                        sources: [{ title: '微博 完整版', link: 'https://weibo.com/7832568510/5017324237621915', platform: 'Weibo' }],
+                        categories: ['race'] 
+                    }
+                ]
+            },
+            '2011-11-11': {
+                tags: [
+                    { text: '🏆 第28届全国男女短道速滑比赛', type: 'type-race', category: 'race' }
+                ],
+                details: [
+                    { 
+                        text: '🏆 第28届全国男女短道速滑比赛(男中组) 1500m FA 第2名', 
+                        sources: [{ title: '微博 完整版', link: 'https://weibo.com/7832568510/5017336119036141', platform: 'Weibo' }],
+                        categories: ['race'] 
+                    }
+                ]
+            },
+            '2011-11-13': {
+                tags: [
+                    { text: '🏆 第28届全国男女短道速滑比赛', type: 'type-race', category: 'race' }
+                ],
+                details: [
+                    { 
+                        text: '🏆 第28届全国男女短道速滑比赛(男中组) 1000m 预赛 第1名', 
+                        sources: [{ title: '微博 完整版', link: 'https://weibo.com/7832568510/5006073052269270', platform: 'Weibo' }],
+                        categories: ['race'] 
+                    },
+                    { 
+                        text: '🏆 第28届全国男女短道速滑比赛(男中组) 1000m FA 第1名 视角1', 
+                        sources: [{ title: '微博 完整版', link: 'https://weibo.com/7832568510/5006077389178512', platform: 'Weibo' }],
+                        categories: ['race'] 
+                    },
+                    { 
+                        text: '🏆 第28届全国男女短道速滑比赛(男中组) 1000m FA 第1名 视角2', 
+                        sources: [{ title: '微博 完整版', link: 'https://weibo.com/7832568510/5016645086744728', platform: 'Weibo' }],
+                        categories: ['race'] 
+                    }
+                ]
+            },
+            '2011-11-25': {
+                tags: [
+                    { text: '🏆 第27届会长杯全国男女短道速滑比赛', type: 'type-race', category: 'race' }
+                ],
+                details: [
+                    { 
+                        text: '🏆 第27届会长杯全国男女短道速滑比赛(男中组) 1500m FA 第1名', 
+                        sources: [{ title: '微博 完整版', link: 'https://weibo.com/7832568510/5017340816656782', platform: 'Weibo' }],
+                        categories: ['race'] 
+                    }
+                ]
+            },
+
+            // ==================== 2012年 ====================
+            '2012-01-18': {
+                tags: [
+                    { text: '🏆 2012因斯布鲁克冬青奥会', type: 'type-race', category: 'race' }
+                ],
+                details: [
+                    { 
+                        text: '🏆 2012因斯布鲁克冬青奥会 1000m 半决赛 第1名+FA 金牌', 
+                        sources: [{ title: '微博 完整版', link: 'https://weibo.com/7832568510/5006093137478389', platform: 'Weibo' }],
+                        categories: ['race'] 
+                    }
+                ]
+            },
+            '2012-01-19': {
+                tags: [
+                    { text: '🏆 2012因斯布鲁克冬青奥会', type: 'type-race', category: 'race' }
+                ],
+                details: [
+                    { 
+                        text: '🏆 2012因斯布鲁克冬青奥会 500m 半决赛 第2名+FA 银牌', 
+                        sources: [{ title: '微博 完整版', link: 'https://weibo.com/7832568510/5006116579446837', platform: 'Weibo' }],
+                        categories: ['race'] 
+                    }
+                ]
+            },
+            '2012-01-21': {
+                tags: [
+                    { text: '🏆 2012因斯布鲁克冬青奥会', type: 'type-race', category: 'race' }
+                ],
+                details: [
+                    { 
+                        text: '🏆 2012因斯布鲁克冬青奥会 3000m 跨国接力H队 半决赛 第2名+FA PEN', 
+                        sources: [{ title: '微博 完整版', link: 'https://weibo.com/7832568510/5006121956279149', platform: 'Weibo' }],
+                        categories: ['race'] 
+                    }
+                ]
+            },
+            '2012-02-09': {
+                tags: [
+                    { text: '🏆 第93届全国冬季运动会', type: 'type-race', category: 'race' }
+                ],
+                details: [
+                    { 
+                        text: '🏆 第93届全国冬季运动会(男中组) 1500m 预赛 第1名', 
+                        sources: [{ title: '微博 完整版', link: 'https://weibo.com/7832568510/5006128742141889', platform: 'Weibo' }],
+                        categories: ['race'] 
+                    },
+                    { 
+                        text: '🏆 第93届全国冬季运动会(男中组) 1500m FA 第4名', 
+                        sources: [{ title: '微博 完整版', link: 'https://weibo.com/7832568510/5006853058594235', platform: 'Weibo' }],
+                        categories: ['race'] 
+                    }
+                ]
+            },
+            '2012-10-26': {
+                tags: [
+                    { text: '🏆 第29届全国男女短道速滑锦标赛', type: 'type-race', category: 'race' }
+                ],
+                details: [
+                    { 
+                        text: '🏆 第29届全国男女短道速滑锦标赛(男高组) 1500m FA 第5名 视角1', 
+                        sources: [{ title: '微博 完整版', link: 'https://weibo.com/7832568510/5006859968973213', platform: 'Weibo' }],
+                        categories: ['race'] 
+                    },
+                    { 
+                        text: '🏆 第29届全国男女短道速滑锦标赛(男高组) 1500m FA 第5名 视角2', 
+                        sources: [{ title: '微博 完整版', link: 'https://weibo.com/7832568510/5017344707397444', platform: 'Weibo' }],
+                        categories: ['race'] 
+                    }
+                ]
+            },
+            '2012-10-27': {
+                tags: [
+                    { text: '🏆 第29届全国男女短道速滑锦标赛', type: 'type-race', category: 'race' }
+                ],
+                details: [
+                    { 
+                        text: '🏆 第29届全国男女短道速滑锦标赛(男高组) 3000m FA 第1名', 
+                        sources: [{ title: '微博 完整版', link: 'https://weibo.com/7832568510/5006907767784175', platform: 'Weibo' }],
+                        categories: ['race'] 
+                    }
+                ]
+            },
+            '2012-11-17': {
+                tags: [
+                    { text: '🏆 第25届首尔市长杯', type: 'type-race', category: 'race' }
+                ],
+                details: [
+                    { 
+                        text: '🏆 第25届首尔市长杯(男高组) 1500m FA 第2名', 
+                        sources: [{ title: '微博 完整版', link: 'https://weibo.com/7832568510/5007631498875550', platform: 'Weibo' }],
+                        categories: ['race'] 
+                    }
+                ]
+            },
+            '2012-11-18': {
+                tags: [
+                    { text: '🏆 第25届首尔市长杯', type: 'type-race', category: 'race' }
+                ],
+                details: [
+                    { 
+                        text: '🏆 第25届首尔市长杯(男高组) 1000m FA 第2名', 
+                        sources: [{ title: '微博 完整版', link: 'https://weibo.com/7832568510/5007632299199419', platform: 'Weibo' }],
+                        categories: ['race'] 
+                    }
+                ]
+            },
+            '2012-11-23': {
+                tags: [
+                    { text: '🏆 第28届会长杯全国男女短道速滑比赛', type: 'type-race', category: 'race' }
+                ],
+                details: [
+                    { 
+                        text: '🏆 第28届会长杯全国男女短道速滑比赛(男高组) 1500m FA 第5名 视角1', 
+                        sources: [{ title: '微博 完整版', link: 'https://weibo.com/7832568510/5007637806580227', platform: 'Weibo' }],
+                        categories: ['race'] 
+                    },
+                    { 
+                        text: '🏆 第28届会长杯全国男女短道速滑比赛(男高组) 1500m FA 第5名 视角2', 
+                        sources: [{ title: '微博 完整版', link: 'https://weibo.com/7832568510/5007639463596605', platform: 'Weibo' }],
+                        categories: ['race'] 
+                    }
+                ]
+            },
+            '2012-11-24': {
+                tags: [
+                    { text: '🏆 第28届会长杯全国男女短道速滑比赛', type: 'type-race', category: 'race' }
+                ],
+                details: [
+                    { 
+                        text: '🏆 第28届会长杯全国男女短道速滑比赛(男高组) 500m FA 第3名', 
+                        sources: [{ title: '微博 完整版', link: 'https://weibo.com/7832568510/5017350183850929', platform: 'Weibo' }],
+                        categories: ['race'] 
+                    }
+                ]
+            },
+            '2012-11-25': {
+                tags: [
+                    { text: '🏆 第28届会长杯全国男女短道速滑比赛', type: 'type-race', category: 'race' }
+                ],
+                details: [
+                    { 
+                        text: '🏆 第28届会长杯全国男女短道速滑比赛(男高组) 3000m接力 FA 第1名 视角1', 
+                        sources: [{ title: '微博 完整版', link: 'https://weibo.com/7832568510/5017356734562651', platform: 'Weibo' }],
+                        categories: ['race'] 
+                    },
+                    { 
+                        text: '🏆 第28届会长杯全国男女短道速滑比赛(男高组) 3000m接力 FA 第1名 视角2', 
+                        sources: [{ title: '微博 完整版', link: 'https://weibo.com/7832568510/5017359391654566', platform: 'Weibo' }],
+                        categories: ['race'] 
+                    }
+                ]
+            },
+            '2012-12-08': {
+                tags: [
+                    { text: '🏆 2012年全国男女青年短道速滑锦标赛', type: 'type-race', category: 'race' }
+                ],
+                details: [
+                    { 
+                        text: '🏆 2012年全国男女青年短道速滑锦标赛(男高组) 1500m 半决赛 第5名', 
+                        sources: [{ title: '微博 完整版', link: 'https://weibo.com/7832568510/5018106258790069', platform: 'Weibo' }],
+                        categories: ['race'] 
+                    },
+                    { 
+                        text: '🏆 2012年全国男女青年短道速滑锦标赛(男高组) 500m 1/4决赛 第3名', 
+                        sources: [{ title: '微博 完整版', link: 'https://weibo.com/7832568510/5018104813587795', platform: 'Weibo' }],
+                        categories: ['race'] 
+                    }
+                ]
+            },
+            '2012-12-09': {
+                tags: [
+                    { text: '🏆 2012年全国男女青年短道速滑锦标赛', type: 'type-race', category: 'race' }
+                ],
+                details: [
+                    { 
+                        text: '🏆 2012年全国男女青年短道速滑锦标赛(男高组) 1000m 1/4决赛 第2名', 
+                        sources: [{ title: '微博 完整版', link: 'https://weibo.com/7832568510/5018108459224164', platform: 'Weibo' }],
+                        categories: ['race'] 
+                    },
+                    { 
+                        text: '🏆 2012年全国男女青年短道速滑锦标赛(男高组) 1000m 半决赛 第4名', 
+                        sources: [{ title: '微博 完整版', link: 'https://weibo.com/7832568510/5018110302359146', platform: 'Weibo' }],
+                        categories: ['race'] 
+                    }
+                ]
+            },
+
+            // ==================== 2013年 ====================
+            '2013-03-14': {
+                tags: [
+                    { text: '🏆 第27届全国男女分类综合短道速滑锦标赛', type: 'type-race', category: 'race' }
+                ],
+                details: [
+                    { 
+                        text: '🏆 第27届全国男女分类综合短道速滑锦标赛(男高组) 1500m FA 第8名', 
+                        sources: [{ title: '微博 完整版', link: 'https://weibo.com/7832568510/5018113084493055', platform: 'Weibo' }],
+                        categories: ['race'] 
+                    }
+                ]
+            },
+            '2013-03-15': {
+                tags: [
+                    { text: '🏆 第27届全国男女分类综合短道速滑锦标赛', type: 'type-race', category: 'race' }
+                ],
+                details: [
+                    { 
+                        text: '🏆 第27届全国男女分类综合短道速滑锦标赛(男高组) 1000m FA PEN', 
+                        sources: [{ title: '微博 完整版', link: 'https://weibo.com/7832568510/5018115150975419', platform: 'Weibo' }],
+                        categories: ['race'] 
+                    }
+                ]
+            },
+
+            // ==================== 2014年 ====================
+            '2014-02-27': {
+                tags: [
+                    { text: '🏆 第95届全国冬季运动会', type: 'type-race', category: 'race' }
+                ],
+                details: [
+                    { 
+                        text: '🏆 第95届全国冬季运动会(男高组) 1500m 预赛 第3名', 
+                        sources: [{ title: '微博 完整版', link: 'https://weibo.com/7832568510/5018390697346341', platform: 'Weibo' }],
+                        categories: ['race'] 
+                    },
+                    { 
+                        text: '🏆 第95届全国冬季运动会(男高组) 1500m FA PEN', 
+                        sources: [{ title: '微博 完整版', link: 'https://weibo.com/7832568510/5018384787833820', platform: 'Weibo' }],
+                        categories: ['race'] 
+                    }
+                ]
+            },
+            '2014-02-28': {
+                tags: [
+                    { text: '🏆 第95届全国冬季运动会', type: 'type-race', category: 'race' }
+                ],
+                details: [
+                    { 
+                        text: '🏆 第95届全国冬季运动会(男高组) 3000m FA 第6名', 
+                        sources: [{ title: '微博 完整版', link: 'https://weibo.com/7832568510/5018404794925462', platform: 'Weibo' }],
+                        categories: ['race'] 
+                    }
+                ]
+            },
+            '2014-03-14': {
+                tags: [
+                    { text: '🏆 第28届全国男女分类综合短道速滑锦标赛', type: 'type-race', category: 'race' }
+                ],
+                details: [
+                    { 
+                        text: '🏆 第28届全国男女分类综合短道速滑锦标赛(男高组) 1500m 半决赛 PEN', 
+                        sources: [{ title: '微博 完整版', link: 'https://weibo.com/7832568510/5018409634628022', platform: 'Weibo' }],
+                        categories: ['race'] 
+                    }
+                ]
+            },
+            '2014-11-09': {
+                tags: [
+                    { text: '🏆 第31届全国男女短道速滑比赛', type: 'type-race', category: 'race' }
+                ],
+                details: [
+                    { 
+                        text: '🏆 第31届全国男女短道速滑比赛(男高组) 3000m FA 第8名', 
+                        sources: [{ title: '微博 完整版', link: 'https://weibo.com/7832568510/5018418213030824', platform: 'Weibo' }],
+                        categories: ['race'] 
+                    }
+                ]
+            },
+
+            // ==================== 2015年 ====================
+            '2015-11-21': {
+                tags: [
+                    { text: '🏆 第32届全国男女短道速滑比赛', type: 'type-race', category: 'race' }
+                ],
+                details: [
+                    { 
+                        text: '🏆 第32届全国男女短道速滑比赛(男大组) 500m 半决赛 第2名', 
+                        sources: [{ title: '微博 完整版', link: 'https://weibo.com/7832568510/5019507995185617', platform: 'Weibo' }],
+                        categories: ['race'] 
+                    },
+                    { 
+                        text: '🏆 第32届全国男女短道速滑比赛(男大组) 500m FA 第1名', 
+                        sources: [{ title: '微博 完整版', link: 'https://weibo.com/7832568510/5019521641350926', platform: 'Weibo' }],
+                        categories: ['race'] 
+                    }
+                ]
+            },
+            '2015-11-22': {
+                tags: [
+                    { text: '🏆 第32届全国男女短道速滑比赛', type: 'type-race', category: 'race' }
+                ],
+                details: [
+                    { 
+                        text: '🏆 第32届全国男女短道速滑比赛(男大组) 1000m FA 第3名', 
+                        sources: [{ title: '微博 完整版', link: 'https://weibo.com/7832568510/5019521641350926', platform: 'Weibo' }],
+                        categories: ['race'] 
+                    }
+                ]
+            },
+            '2015-12-11': {
+                tags: [
+                    { text: '🏆 第31届会长杯全国男女短道速滑比赛', type: 'type-race', category: 'race' }
+                ],
+                details: [
+                    { 
+                        text: '🏆 第31届会长杯全国男女短道速滑比赛(男大组) 500m 预赛 第1名', 
+                        sources: [{ title: '微博 完整版', link: 'https://weibo.com/7832568510/5021740978409621', platform: 'Weibo' }],
+                        categories: ['race', 'treasure'] 
+                    }
+                ]
+            },
+            '2015-12-12': {
+                tags: [
+                    { text: '🏆 第31届会长杯全国男女短道速滑比赛', type: 'type-race', category: 'race' }
+                ],
+                details: [
+                    { 
+                        text: '🏆 第31届会长杯全国男女短道速滑比赛(男大组) 500m 半决赛 no time', 
+                        sources: [{ title: '微博 完整版', link: 'https://weibo.com/7832568510/5021743920188383', platform: 'Weibo' }],
+                        categories: ['race'] 
+                    }
+                ]
+            },
+            '2015-12-13': {
+                tags: [
+                    { text: '🏆 第31届会长杯全国男女短道速滑比赛', type: 'type-race', category: 'race' }
+                ],
+                details: [
+                    { 
+                        text: '🏆 第31届会长杯全国男女短道速滑比赛(男大组) 1000m 半决赛 第1名', 
+                        sources: [{ title: '微博 完整版', link: 'https://weibo.com/7832568510/5021748980878910', platform: 'Weibo' }],
+                        categories: ['race', 'treasure'] 
+                    }, 
+                    { 
+                        text: '🏆 第31届会长杯全国男女短道速滑比赛(男大组) 1000m FA 第4名', 
+                        sources: [{ title: '微博 完整版', link: 'https://weibo.com/7832568510/5021751333356306', platform: 'Weibo' }],
+                        categories: ['race'] 
+                    }
+                ]
+            },
+
+            // ==================== 2018年 ====================
+            '2018-02-10': {
+                tags: [
+                    { text: '🏆 平昌冬奥会', type: 'type-race', category: 'race' }
+                ],
+                details: [
+                    { 
+                        text: '🏆 平昌冬奥会 短道速滑1500m 金牌', 
+                        time: '20:15', 
+                        sources: [
+                            { title: 'B站 完整版', link: 'https://www.bilibili.com/video/BV20180210', platform: 'Bilibili' },
+                            { title: 'YouTube 官方', link: 'https://www.youtube.com/watch?v=123', platform: 'YouTube' }
+                        ],
+                        categories: ['race', 'treasure'],
+                        images: [
+                            'https://picsum.photos/200/200?random=1',
+                            'https://picsum.photos/200/200?random=2',
+                            'https://picsum.photos/200/200?random=3'
+                        ]
+                    },
+                    { 
+                        text: '📸 颁奖仪式 升国旗', 
+                        time: '21:30', 
+                        sources: [{ title: '微博 完整版', link: 'https://weibo.com/20180210', platform: 'Weibo' }],
+                        categories: ['activity'] 
+                    },
+                    { 
+                        text: '🎤 赛后采访 激动落泪', 
+                        time: '22:00', 
+                        sources: [{ title: 'YouTube 完整版', link: 'https://www.youtube.com/20180210', platform: 'YouTube' }],
+                        categories: ['interview'] 
+                    }
+                ]
+            },
+            '2018-02-17': {
+                tags: [
+                    { text: '🏆 平昌冬奥会', type: 'type-race', category: 'race' }
+                ],
+                details: [
+                    { 
+                        text: '🏆 平昌冬奥会 500m 铜牌', 
+                        time: '19:45', 
+                        sources: [{ title: 'B站 完整版', link: 'https://www.bilibili.com/video/BV20180217', platform: 'Bilibili' }],
+                        categories: ['race', 'treasure'],
+                        images: [
+                            'https://picsum.photos/200/200?random=4',
+                            'https://picsum.photos/200/200?random=5'
+                        ]
+                    },
+                    { 
+                        text: '📸 领奖台合照', 
+                        time: '21:00', 
+                        sources: [{ title: 'Twitter 原帖', link: 'https://twitter.com/20180217', platform: 'Twitter' }],
+                        categories: ['activity'] 
+                    }
+                ]
+            },
+
+            // ==================== 2019年 ====================
+            '2019-03-09': {
+                tags: [
+                    { text: '🏆 世锦赛', type: 'type-race', category: 'race' }
+                ],
+                details: [
+                    { 
+                        text: '🏆 2019世锦赛 1000m金牌', 
+                        time: '14:30', 
+                        sources: [{ title: 'B站 完整版', link: 'https://www.bilibili.com/video/BV20190309', platform: 'Bilibili' }],
+                        categories: ['race', 'treasure'] 
+                    },
+                    { 
+                        text: '💗 全能冠军 颁奖', 
+                        time: '16:20', 
+                        sources: [{ title: 'YouTube 完整版', link: 'https://www.youtube.com/20190309', platform: 'YouTube' }],
+                        categories: ['race', 'treasure'],
+                        image: 'https://picsum.photos/200/200?random=6'
+                    },
+                    { 
+                        text: '💬 赛后ins更新', 
+                        time: '19:10', 
+                        sources: [{ title: 'Instagram 原帖', link: 'https://www.instagram.com/20190309', platform: 'Instagram' }],
+                        categories: ['sns'] 
+                    }
+                ]
+            },
+
+            // ==================== 2022年 ====================
+            '2022-02-09': {
+                tags: [
+                    { text: '🏆 北京冬奥会', type: 'type-race', category: 'race' },
+                    { text: '💬 中国队首秀', type: 'type-sns', category: 'sns' }
+                ],
+                details: [
+                    { 
+                        text: '🏆 北京冬奥会 短道速滑1500m 四强', 
+                        time: '19:00', 
+                        sources: [{ title: 'B站 完整版', link: 'https://www.bilibili.com/video/BV20220209', platform: 'Bilibili' }],
+                        categories: ['race'] 
+                    },
+                    { 
+                        text: '🎤 赛后采访：“会继续努力”', 
+                        time: '21:10', 
+                        sources: [{ title: '微博 完整版', link: 'https://weibo.com/20220209', platform: 'Weibo' }],
+                        categories: ['interview'],
+                        image: 'https://picsum.photos/200/200?random=7'
+                    },
+                    { 
+                        text: '📸 中国队合照', 
+                        time: '21:40', 
+                        sources: [{ title: 'Twitter 原帖', link: 'https://twitter.com/20220209', platform: 'Twitter' }],
+                        categories: ['activity'] 
+                    }
+                ]
+            },
+
+            // ==================== 2023年 ====================
+            '2023-07-20': {
+                tags: [
+                    { text: '🎬 综艺《冰上少年》', type: 'type-activity', category: 'activity' }
+                ],
+                details: [
+                    { 
+                        text: '🎬 《冰上少年》完整版', 
+                        time: '20:00', 
+                        sources: [
+                            { title: 'B站 完整版', link: 'https://www.bilibili.com/video/BV20230720', platform: 'Bilibili' },
+                            { title: 'YouTube 官方', link: 'https://www.youtube.com/watch?v=456', platform: 'YouTube' },
+                            { title: '微博 剪辑版', link: 'https://weibo.com/20230720', platform: '微博' }
+                        ],
+                        categories: ['activity'],
+                        images: [
+                            'https://picsum.photos/200/200?random=8',
+                            'https://picsum.photos/200/200?random=9',
+                            'https://picsum.photos/200/200?random=10'
+                        ]
+                    }
+                ]
+            },
+            '2023-12-10': {
+                tags: [
+                    { text: '🏆 世界杯', type: 'type-race', category: 'race' }
+                ],
+                details: [
+                    { 
+                        text: '🏆 世界杯 500m决赛 金牌', 
+                        time: '15:30', 
+                        sources: [{ title: 'B站 完整版', link: 'https://www.bilibili.com/video/BV20231210', platform: 'Bilibili' }],
+                        categories: ['race', 'treasure'] 
+                    },
+                    { 
+                        text: '🔴 赛后直播 访谈', 
+                        time: '18:20', 
+                        sources: [{ title: 'YouTube 完整版', link: 'https://www.youtube.com/20231210', platform: 'YouTube' }],
+                        categories: ['activity'] 
+                    }
+                ]
+            },
+
+            // ==================== 2024年 ====================
+            '2024-03-16': {
+                tags: [
+                    { text: '🏆 世锦赛', type: 'type-race', category: 'race' }
+                ],
+                details: [
+                    { 
+                        text: '🏆 世锦赛 1000m 银牌', 
+                        time: '14:15', 
+                        sources: [{ title: 'B站 完整版', link: 'https://www.bilibili.com/video/BV20240316', platform: 'Bilibili' }],
+                        categories: ['race'] 
+                    },
+                    { 
+                        text: '📸 颁奖合照', 
+                        time: '16:30', 
+                        sources: [{ title: '微博 完整版', link: 'https://weibo.com/20240316', platform: 'Weibo' }],
+                        categories: ['activity'],
+                        images: [
+                            'https://picsum.photos/200/200?random=11',
+                            'https://picsum.photos/200/200?random=12'
+                        ]
+                    }
+                ]
+            },
+            '2024-05-15': {
+                tags: [
+                    { text: '📸 杂志拍摄', type: 'type-activity', category: 'activity' }
+                ],
+                details: [
+                    { 
+                        text: '📸 《风尚志》杂志封面拍摄花絮', 
+                        time: '12:30', 
+                        sources: [{ title: 'B站 完整版', link: 'https://www.bilibili.com/video/BV20240515', platform: 'Bilibili' }],
+                        categories: ['activity'] 
+                    }
+                ]
+            },
+
+            // ==================== 2025年 ====================
+            '2025-12-20': {
+                tags: [
+                    { text: '🏆 世界杯首尔站', type: 'type-race', category: 'race' },
+                    { text: '🔴 赛后直播', type: 'type-activity', category: 'activity' }
+                ],
+                details: [
+                    { 
+                        text: '🏆 世界杯首尔站 500m 金牌', 
+                        time: '13:20', 
+                        sources: [{ title: 'B站 完整版', link: 'https://www.bilibili.com/video/BV20251220', platform: 'Bilibili' }],
+                        categories: ['race', 'treasure'] 
+                    },
+                    { 
+                        text: '🔴 赛后直播 访谈', 
+                        time: '17:45', 
+                        sources: [{ title: 'YouTube 完整版', link: 'https://www.youtube.com/20251220', platform: 'YouTube' }],
+                        categories: ['activity'] 
+                    }
+                ]
+            },
+            '2025-12-25': {
+                tags: [
+                    { text: '💬 圣诞祝福', type: 'type-sns', category: 'sns' },
+                    { text: '📸 圣诞合照', type: 'type-activity', category: 'activity' }
+                ],
+                details: [
+                    { 
+                        text: '💬 日常分享：圣诞快乐', 
+                        time: '12:00', 
+                        sources: [{ title: '微博 原帖', link: 'https://weibo.com/20251225', platform: 'Weibo' }],
+                        categories: ['sns'] 
+                    },
+                    { 
+                        text: '📸 与队友圣诞合照', 
+                        time: '14:20', 
+                        sources: [{ title: 'Twitter 原帖', link: 'https://twitter.com/20251225', platform: 'Twitter' }],
+                        categories: ['activity'],
+                        images: [
+                            'https://picsum.photos/200/200?random=13',
+                            'https://picsum.photos/200/200?random=14',
+                            'https://picsum.photos/200/200?random=15'
+                        ]
+                    }
+                ]
+            },
+
+            // ==================== 2026年 ====================
+            '2026-02-01': {
+                tags: [
+                    { text: '🏆 世锦赛1500m', type: 'type-race', category: 'race' },
+                    { text: '💬 日常更新', type: 'type-sns', category: 'sns' },
+                    { text: '📸 官方合照', type: 'type-activity', category: 'activity' }
+                ],
+                details: [
+                    { 
+                        text: '🏆 [直拍] 林孝埈 世锦赛1500m 半决赛 全场焦点', 
+                        time: '15:30', 
+                        sources: [{ title: 'B站 完整版', link: 'https://www.bilibili.com/video/BV20260201', platform: 'Bilibili' }],
+                        categories: ['race'],
+                        images: [
+                            'https://picsum.photos/200/200?random=16',
+                            'https://picsum.photos/200/200?random=17',
+                            'https://picsum.photos/200/200?random=18'
+                        ]
+                    },
+                    { 
+                        text: '💬 日常分享：与奖牌的自拍 💗“谢谢大家”', 
+                        time: '19:22', 
+                        sources: [{ title: 'Instagram 原帖', link: 'https://www.instagram.com/20260201', platform: 'Instagram' }],
+                        categories: ['sns'] 
+                    },
+                    { 
+                        text: '📸 官推：世锦赛首金 后台合照', 
+                        time: '20:10', 
+                        sources: [{ title: 'Twitter 原帖', link: 'https://twitter.com/20260201', platform: 'Twitter' }],
+                        categories: ['activity'] 
+                    },
+                    { 
+                        text: '📌 训练花絮 官方更新', 
+                        time: '21:05', 
+                        sources: [{ title: 'B站 完整版', link: 'https://www.bilibili.com/video/BV20260201a', platform: 'Bilibili' }],
+                        categories: ['record'] 
+                    },
+                    { 
+                        text: '🎤 赛后采访 中字完整版', 
+                        time: '22:30', 
+                        sources: [{ title: 'YouTube 完整版', link: 'https://www.youtube.com/20260201', platform: 'YouTube' }],
+                        categories: ['interview'] 
+                    },
+                    { 
+                        text: '💬 日常：明天继续加油', 
+                        time: '23:17', 
+                        sources: [{ title: '微博 原帖', link: 'https://weibo.com/20260201', platform: 'Weibo' }],
+                        categories: ['sns'] 
+                    }
+                ]
+            },
+            '2026-02-07': {
+                tags: [
+                    { text: '🧣 微博转发-🇨🇳💪🏻', type: 'type-sns', category: 'sns' }
+                ],
+                details: [
+                    { 
+                        text: '🧣 微博转发-🇨🇳💪🏻·Team China米兰冬奥开幕式', 
+                        time: '04:33', 
+                        sources: [{ title: '微博 原帖', link: 'https://weibo.com/7725970927/5263543483760804', platform: 'Weibo' }],
+                        categories: ['sns'] 
+                    }
+                ]
+            },
+            '2026-02-21': {
+                tags: [
+                    { text: '🧣 微博更新-米兰冬奥会·四个感谢', type: 'type-sns', category: 'sns' }
+                ],
+                details: [
+                    { 
+                        text: '🧣 微博更新-米兰冬奥会·四个感谢', 
+                        time: '22:15', 
+                        sources: [{ title: '微博 原帖', link: 'https://weibo.com/7725970927/5268884141379626', platform: 'Weibo' }],
+                        categories: ['sns'] 
+                    }
+                ]
+            },
+            '2026-02-25': {
+                tags: [
+                    { text: '💬 微博评论区更新-🐼', type: 'type-sns', category: 'sns' }
+                ],
+                details: [
+                    { 
+                        text: '💬 微博评论区更新-🐼', 
+                        time: '21:32', 
+                        sources: [{ title: '微博 原帖', link: 'https://weibo.com/7725970927/5268884141379626', platform: 'Weibo' }],
+                        categories: ['sns'] 
+                    }
+                ]
+            },
+            '2026-03-04': {
+                tags: [
+                    { text: '📌 林孝埈捐赠头盔', type: 'type-record', category: 'record' }
+                ],
+                details: [
+                    { 
+                        text: '📌 olympicmuseum-ins快拍更新相关: 林孝埈捐赠头盔 ', 
+                        sources: [{ title: 'YouTube 完整版', link: 'https://www.youtube.com/20260305', platform: 'YouTube' }],
+                        categories: ['activity'] 
+                    }
+                ]
+            },
+            '2026-03-06': {
+                tags: [
+                    { text: '📸 品牌合作-沃尔沃系列互动', type: 'type-activity', category: 'activity' }
+                ],
+                details: [
+                    { 
+                        text: '📸 品牌合作-沃尔沃挚友系列互动', 
+                        time: '10:00', 
+                        sources: [
+                            { title: '小林更新微博并点赞', link: 'https://weibo.com/7725970927/5273410080342975', platform: 'Weibo', author: '林孝埈Lin_xiaojun' },
+                            { title: '沃尔沃转发互动', link: 'https://weibo.com/1891845373/5273411245839719', platform: 'Weibo', author: '沃尔沃汽车VolvoCars' },
+                            { title: '小林微博关注沃尔沃', link: 'https://weibo.com/7832568510/5273910473133039', platform: 'Weibo', author: '林孝埈Lin_xiaojun' },
+                            { title: '沃尔沃微博关注小林', link: 'https://weibo.com/7832568510/5273910473133039', platform: 'Weibo', author: '沃尔沃汽车VolvoCars' },
+                            { title: '小林点赞沃尔沃1月官宣微博和相关视频', link: 'https://weibo.com/7832568510/5273910473133039', platform: 'Weibo', author: '林孝埈Lin_xiaojun' },
+                        ],
+                        categories: ['activity', 'sns'] 
+                    }
+                ]
+            },
+            '2026-03-07': {
+                tags: [
+                    { text: '🧣 微博点赞-米兰冬残奥首金', type: 'type-sns', category: 'sns' }
+                ],
+                details: [
+                    { 
+                        text: '🧣 微博点赞-蔡佳云米兰冬残奥会中国首金', 
+                        time: '20:53', 
+                        sources: [
+                            { title: '点赞记录', link: 'https://weibo.com/7832568510/5273959865258799', platform: 'Weibo', author: '林孝埈Lin_xiaojun｜-Bifröst-' },
+                            { title: '新华社原博', link: 'https://weibo.com/1699432410/5273929373451031', platform: 'Weibo', author: '新华社' },
+                        ],
+                        categories: ['sns'] 
+                    }
+                ]
+            },
+            '2026-03-09': {
+                tags: [
+                    { text: '📕 小红书更新', type: 'type-sns', category: 'sns' }
+                ],
+                details: [
+                    { 
+                        text: '📕 小红书更新-快乐假期', 
+                        sources: [{ title: '快乐假期 #帅气的运动员#', link: 'http://xhslink.com/o/11ndfOwlVcP', platform: 'Rednote', author: '林孝埈' }],
+                        categories: ['sns'] 
+                    }
+                ]
+            },
+            '2026-03-14': {
+                tags: [
+                    { text: '📸 F1中国大奖赛观赛&颁奖', type: 'type-activity', category: 'activity' },
+                    { text: '🧣 微博更新', type: 'type-sns', category: 'sns' },
+                    { text: '📕 小红书更新', type: 'type-sns', category: 'sns' },
+                ],
+                details: [
+                    { 
+                        text: '🧣 微博更新-2026F1中国大奖赛·上海', 
+                        sources: [{ title: '第一次在现场观赛F1', link: 'https://weibo.com/7725970927/5276477174056095', platform: 'Weibo', author: '林孝埈Lin_xiaojun' }],
+                        categories: ['sns'] 
+                    },
+                    { 
+                        text: '📕 小红书更新-2026F1中国大奖赛·上海', 
+                        sources: [{ title: '开心😘😘😘 #帅气的运动员#', link: 'http://xhslink.com/o/5KsWbvEKpRp', platform: 'Rednote', author: '林孝埈' }],
+                        categories: ['sns'] 
+                    }
+                ]
+            },
+            '2026-04-15': {
+                tags: [
+                    { text: '📌 训练日志', type: 'type-record', category: 'record' }
+                ],
+                details: [
+                    { 
+                        text: '今天进行了高强度体能训练，状态很好', 
+                        categories: ['record'] 
+                    }
+                ]
+            }
+        };
+
+        // ========== 2. 安利百宝箱数据（不受年月限制）- 已修改为sources数组格式 ==========
+        const treasureData = [
+            {
+                id: 1,
+                title: '💗 平昌冬奥会1500m金牌 高清修复',
+                text: '💗 平昌冬奥会1500m金牌 高清修复',
+                date: '2024-03-15',
+                time: '20:15',
+                sources: [
+                    { title: 'B站 高清修复版', link: 'https://www.bilibili.com/video/BV123456', platform: 'Bilibili', quality: '4K' }
+                ],
+                description: '逐帧修复版，每个动作都干净利落，永远的经典。',
+                images: [
+                    'https://picsum.photos/200/200?random=101',
+                    'https://picsum.photos/200/200?random=102',
+                    'https://picsum.photos/200/200?random=103'
+                ],
+                type: 'treasure-video'
+            },
+            {
+                id: 2,
+                title: '💗 训练场抓拍 帅气瞬间',
+                text: '💗 训练场抓拍 帅气瞬间',
+                date: '2025-06-20',
+                description: '2025年国家队训练场抓拍，笑容太治愈了！',
+                images: [
+                    'https://picsum.photos/200/200?random=104',
+                    'https://picsum.photos/200/200?random=105',
+                    'https://picsum.photos/200/200?random=106',
+                    'https://picsum.photos/200/200?random=107'
+                ],
+                type: 'treasure-image'
+            },
+            {
+                id: 3,
+                title: '💗 入坑时刻：2018年那个夜晚',
+                text: '💗 入坑时刻：2018年那个夜晚',
+                description: '第一次看他比赛就爱上了，六年了，还是很喜欢。',
+                type: 'treasure-text'
+            },
+            {
+                id: 4,
+                title: '💗 采访合集 中字翻译',
+                text: '💗 采访合集 中字翻译',
+                sources: [
+                    { title: 'YouTube 完整版', link: 'https://www.youtube.com/watch?v=123456', platform: 'YouTube' },
+                    { title: 'B站 熟肉版', link: 'https://www.bilibili.com/video/BV789', platform: 'Bilibili' }
+                ],
+                description: '整理了他从2018年到2025年的所有采访，带中文字幕。',
+                date: '2025-12-01',
+                type: 'treasure-video'
+            },
+            {
+                id: 5,
+                title: '💗 一些想记录的心情',
+                text: '💗 一些想记录的心情',
+                description: '喜欢他的第2000天，希望他永远健康快乐。',
+                type: 'treasure-text'
+            }
+        ];
+
+        // 分类映射
+        const categoryMap = {
+            'race': '比赛',
+            'interview': '采访',
+            'activity': '活动',
+            'sns': 'SNS',
+            'record': '记录',
+            'treasure': '安利'
+        };
+
+        const today = new Date();
+        const currentYear = today.getFullYear();
+        const currentMonth = today.getMonth() + 1;
+
+        // ========== 工具函数 ==========
+        function getAvailableYearsMonths() {
+            const years = new Set();
+            const monthsByYear = {};
+            
+            Object.keys(allData).forEach(dateStr => {
+                const [year, month] = dateStr.split('-').map(Number);
+                years.add(year);
+                if (!monthsByYear[year]) monthsByYear[year] = new Set();
+                monthsByYear[year].add(month);
+            });
+            
+            return {
+                years: Array.from(years).sort((a, b) => a - b),
+                monthsByYear: monthsByYear
+            };
+        }
+
+        function hasDataForYearMonth(year, month) {
+            return Object.keys(allData).some(dateStr => {
+                const [y, m] = dateStr.split('-').map(Number);
+                return y === year && m === month;
+            });
+        }
+
+        function findNearestAvailableDate(targetYear, targetMonth) {
+            const availableDates = [];
+            Object.keys(allData).forEach(dateStr => {
+                const [year, month] = dateStr.split('-').map(Number);
+                availableDates.push({ year, month });
+            });
+            
+            availableDates.sort((a, b) => {
+                if (a.year !== b.year) return a.year - b.year;
+                return a.month - b.month;
+            });
+            
+            const targetTimestamp = new Date(targetYear, targetMonth - 1, 1).getTime();
+            let nearestDate = availableDates[0];
+            let minDiff = Math.abs(new Date(nearestDate.year, nearestDate.month - 1, 1).getTime() - targetTimestamp);
+            
+            availableDates.forEach(date => {
+                const ts = new Date(date.year, date.month - 1, 1).getTime();
+                const diff = Math.abs(ts - targetTimestamp);
+                if (diff < minDiff) {
+                    minDiff = diff;
+                    nearestDate = date;
+                }
+            });
+            
+            return nearestDate;
+        }
+
+        // 安全地编码字符串用于HTML属性
+        function escapeHtml(str) {
+            if (!str) return '';
+            return String(str)
+                .replace(/&/g, '&amp;')
+                .replace(/</g, '&lt;')
+                .replace(/>/g, '&gt;')
+                .replace(/"/g, '&quot;')
+                .replace(/'/g, '&#039;')
+                .replace(/`/g, '&#96;')
+                .replace(/\//g, '&#47;');
+        }
+
+        // 安全地将对象转换为JSON字符串，用于HTML属性
+        function safeJsonStringify(obj) {
+            if (!obj) return 'null';
+            return JSON.stringify(obj)
+                .replace(/&/g, '&amp;')
+                .replace(/</g, '&lt;')
+                .replace(/>/g, '&gt;')
+                .replace(/"/g, '&quot;')
+                .replace(/'/g, '&#039;')
+                .replace(/`/g, '&#96;')
+                .replace(/\//g, '&#47;');
+        }
+
+        // ========== 新增工具函数 ==========
+        // 格式化单个来源的tooltip信息
+        function formatSourceTooltip(source) {
+            let parts = [];
+            if (source.title) parts.push(source.title);
+            if (source.platform) parts.push( source.platform );
+            if (source.quality) parts.push( source.quality );
+            if (source.author) parts.push( source.author );
+            return parts.join(' · ');
+        }
+
+        // 格式化多个来源的显示文本
+        function formatMultipleSources(sources) {
+            // 统计各平台数量
+            const stats = {};
+            sources.forEach(s => {
+                const platform = s.platform || '其他';
+                stats[platform] = (stats[platform] || 0) + 1;
+            });
+            
+            // 获取所有平台（去重）
+            const platforms = Object.keys(stats);
+            const totalCount = sources.length;
+            
+            // 生成显示文本：平台1·平台2 总数
+            if (platforms.length === 1) {
+                // 同平台：微博 3
+                return `${platforms[0]} ${totalCount}`;
+            } else {
+                // 不同平台：B站·微博 3
+                return `${platforms.join('·')} ${totalCount}`;
+            }
+        }
+
+        let defaultYear = currentYear;
+        let defaultMonth = currentMonth;
+
+        if (!hasDataForYearMonth(currentYear, currentMonth)) {
+            const nearest = findNearestAvailableDate(currentYear, currentMonth);
+            defaultYear = nearest.year;
+            defaultMonth = nearest.month;
+        }
+
+        let currentCategory = 'all';
+        let selectedYear = String(defaultYear);
+        let selectedMonth = String(defaultMonth);
+
+        const yearFilter = document.getElementById('yearFilter');
+        const monthFilter = document.getElementById('monthFilter');
+        const clearFilterBtn = document.getElementById('clearFilterBtn');
+        const todayBtn = document.getElementById('todayBtn');
+        const calendarLeft = document.getElementById('calendarLeft');
+        const detailList = document.getElementById('detailList');
+        const detailTitle = document.getElementById('detailTitle');
+        const mainPanel = document.getElementById('mainPanel');
+        const filterBar = document.getElementById('filterBar');
+
+        // 图片模态框相关
+        const imageModal = document.getElementById('imageModal');
+        const modalImage = document.getElementById('modalImage');
+        const modalClose = document.getElementById('modalClose');
+        const modalPrev = document.getElementById('modalPrev');
+        const modalNext = document.getElementById('modalNext');
+        
+        // 详情弹窗相关
+        const detailModal = document.getElementById('detailModal');
+        const detailModalTitle = document.getElementById('detailModalTitle');
+        const detailModalBody = document.getElementById('detailModalBody');
+        const detailModalClose = document.getElementById('detailModalClose');
+        
+        let currentImageIndex = 0;
+        let currentImageList = [];
+
+        // ========== 全局函数（供onclick调用） ==========
+        window.openModal = function(images, index) {
+            try {
+                let imageList = images;
+                if (typeof images === 'string') {
+                    try {
+                        imageList = JSON.parse(images);
+                    } catch (e) {
+                        console.error('解析图片列表失败', e);
+                        return;
+                    }
+                }
+                
+                if (!Array.isArray(imageList) || imageList.length === 0) return;
+                
+                currentImageList = imageList;
+                currentImageIndex = index || 0;
+                modalImage.src = imageList[currentImageIndex] || '';
+                imageModal.classList.add('active');
+            } catch (e) {
+                console.error('打开图片模态框失败', e);
+            }
+        };
+
+        window.openDetailModal = function(title, sources) {
+            try {
+                let sourceList = sources;
+                if (typeof sources === 'string') {
+                    try {
+                        sourceList = JSON.parse(sources);
+                    } catch (e) {
+                        console.error('解析来源列表失败', e);
+                        return;
+                    }
+                }
+                
+                if (!Array.isArray(sourceList) || sourceList.length === 0) return;
+                
+                detailModalTitle.textContent = title || '查看来源';
+                
+                let html = '<ul class="source-list">';
+                sourceList.forEach((source, index) => {
+                    let icon = '•';  
+                    
+                    const displayTitle = source.title || `来源 ${index + 1}`;
+                    const platformHtml = source.platform ? `<span>${source.platform}</span>` : '';
+                    const qualityHtml = source.quality ? `<span>${source.quality}</span>` : '';
+                    const authorHtml = source.author ? `<span>${source.author}</span>` : '';
+
+                    const authorLinkHtml = source.authorLink     
+                        ? `<a href="${source.authorLink}" target="_blank" style="color: #2d6ff7; margin-left: 4px;">[主页]</a>`
+                        : '';
+                    
+                    html += `
+                        <li class="source-item">
+                            <a href="${escapeHtml(source.link)}" target="_blank" class="source-link">
+                                <span class="source-icon">${icon}</span>
+                                <div class="source-info">
+                                    <div class="source-title">${escapeHtml(displayTitle)}</div>
+                                    <div class="source-meta">
+                                        ${platformHtml}
+                                        ${qualityHtml}
+                                        ${authorHtml ? `<span>· ${authorHtml}</span>` : ''}
+                                        ${authorLinkHtml}
+                                    </div>
+                                </div>
+                                <span class="source-arrow">→</span>
+                            </a>
+                        </li>
+                    `;
+                });
+                html += '</ul>';
+                
+                detailModalBody.innerHTML = html;
+                detailModal.classList.add('active');
+            } catch (e) {
+                console.error('打开详情弹窗失败', e);
+            }
+        };
+
+        // 关闭图片模态框
+        modalClose.onclick = () => imageModal.classList.remove('active');
+        
+        modalPrev.onclick = () => {
+            if (currentImageList.length) {
+                currentImageIndex = (currentImageIndex - 1 + currentImageList.length) % currentImageList.length;
+                modalImage.src = currentImageList[currentImageIndex];
+            }
+        };
+        
+        modalNext.onclick = () => {
+            if (currentImageList.length) {
+                currentImageIndex = (currentImageIndex + 1) % currentImageList.length;
+                modalImage.src = currentImageList[currentImageIndex];
+            }
+        };
+        
+        imageModal.onclick = (e) => { 
+            if (e.target === imageModal) imageModal.classList.remove('active'); 
+        };
+
+        // 关闭详情弹窗
+        detailModalClose.onclick = () => {
+            detailModal.classList.remove('active');
+        };
+
+        detailModal.onclick = (e) => {
+            if (e.target === detailModal) {
+                detailModal.classList.remove('active');
+            }
+        };
+
+        // ESC键关闭
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') {
+                if (imageModal.classList.contains('active')) {
+                    imageModal.classList.remove('active');
+                }
+                if (detailModal.classList.contains('active')) {
+                    detailModal.classList.remove('active');
+                }
+            } else if (e.key === 'ArrowLeft' && imageModal.classList.contains('active')) {
+                modalPrev.click();
+            } else if (e.key === 'ArrowRight' && imageModal.classList.contains('active')) {
+                modalNext.click();
+            }
+        });
+
+        // ========== 初始化筛选器 ==========
+        function initYearSelect() {
+            const { years } = getAvailableYearsMonths();
+            let options = '<option value="all">全部年份</option>';
+            years.forEach(year => {
+                const selected = (year === parseInt(selectedYear)) ? 'selected' : '';
+                options += `<option value="${year}" ${selected}>${year}年</option>`;
+            });
+            yearFilter.innerHTML = options;
+        }
+
+        function initMonthSelect() {
+            const { monthsByYear } = getAvailableYearsMonths();
+            const availableMonths = monthsByYear[parseInt(selectedYear)] || new Set();
+            let options = '<option value="all">全部月份</option>';
+            Array.from(availableMonths).sort((a, b) => a - b).forEach(month => {
+                options += `<option value="${month}" ${month === parseInt(selectedMonth) ? 'selected' : ''}>${month}月</option>`;
+            });
+            monthFilter.innerHTML = options;
+        }
+
+        initYearSelect();
+        initMonthSelect();
+
+        // ========== 核心筛选函数 ==========
+        function getFilteredDetails() {
+            // 如果是安利分类，直接返回 treasureData
+            if (currentCategory === 'treasure') {
+                return treasureData.map(item => ({
+                    ...item,
+                    displayDate: item.date || '无日期'
+                }));
+            }
+            
+            // 其他分类的正常筛选
+            let filtered = [];
+            Object.entries(allData).forEach(([dateStr, data]) => {
+                const [year, month] = dateStr.split('-').map(Number);
+                
+                if (selectedYear !== 'all' && year !== parseInt(selectedYear)) return;
+                if (selectedMonth !== 'all' && month !== parseInt(selectedMonth)) return;
+                
+                if (data.details && data.details.length > 0) {
+                    let detailsToAdd = [];
+                    
+                    if (currentCategory === 'all') {
+                        detailsToAdd = data.details;
+                    } else {
+                        detailsToAdd = data.details.filter(d => 
+                            d.categories && d.categories.includes(currentCategory)
+                        );
+                    }
+                    
+                    detailsToAdd.forEach(d => {
+                        filtered.push({
+                            ...d,
+                            displayDate: `${year}.${String(month).padStart(2, '0')}.${dateStr.split('-')[2]}`,
+                            fullDate: dateStr,
+                            year, month, day: parseInt(dateStr.split('-')[2])
+                        });
+                    });
+                }
+            });
+
+            filtered.sort((a, b) => a.fullDate.localeCompare(b.fullDate));
+            return filtered;
+        }
+
+        // ========== 渲染函数 ==========
+        function renderTreasureBox() {
+            let html = '<div class="treasure-box">';
+            
+            treasureData.forEach(item => {
+                const dateHtml = item.date ? `<div class="date-badge">📅 ${item.date}</div>` : '';
+                
+                let sourcesHtml = '';
+                if (item.sources && item.sources.length > 0) {
+                    if (item.sources.length === 1) {
+                        const source = item.sources[0];
+                        const tooltipText = formatSourceTooltip(source);
+                        
+                        let badgeParts = [];
+                        if (source.platform) badgeParts.push(source.platform);
+                        if (source.quality) badgeParts.push(source.quality);
+                        const badgeText = badgeParts.join('·');
+                        
+                        sourcesHtml = `
+                            <div style="display: flex; align-items: center; gap: 8px;">
+                                <a href="${escapeHtml(source.link)}" target="_blank" class="link source-tooltip" data-tooltip="${escapeHtml(tooltipText)}">🔗 查看链接</a>
+                                ${badgeText ? `<span class="source-badge-plain">${badgeText}</span>` : ''}
+                            </div>
+                        `;
+                    } else {
+                        const displayText = formatMultipleSources(item.sources);
+                        const sourcesJson = safeJsonStringify(item.sources);
+                        sourcesHtml = `
+                            <span class="source-multi-badge" 
+                                  onclick="event.stopPropagation(); window.openDetailModal('${escapeHtml(item.title || item.text)}', '${sourcesJson}')">
+                                ${displayText}
+                            </span>
+                        `;
+                    }
+                }
+                
+                const timeHtml = item.time ? `<span>⏰ ${item.time}</span>` : '';
+                
+                let imagesHtml = '';
+                if (item.images && item.images.length > 0) {
+                    const imagesJson = safeJsonStringify(item.images);
+                    const imageCount = item.images.length;
+                    
+                    imagesHtml = '<div class="image-grid">';
+                    item.images.slice(0, 3).forEach((img, i) => {
+                        imagesHtml += `<div class="image-item" onclick="event.stopPropagation(); window.openModal('${imagesJson}', ${i})"><img src="${escapeHtml(img)}" alt="treasure"></div>`;
+                    });
+                    if (imageCount > 3) {
+                        imagesHtml += `<div class="image-item" onclick="event.stopPropagation(); window.openModal('${imagesJson}', 3)" style="display: flex; align-items: center; justify-content: center; background: #fff0e0; color: #b45f3a;">+${imageCount - 3}</div>`;
+                    }
+                    imagesHtml += '</div>';
+                } else if (item.image) {
+                    // 单张图片处理
+                    imagesHtml = `
+                        <div class="image-grid">
+                            <div class="image-item" onclick="event.stopPropagation(); window.openModal('${safeJsonStringify([item.image])}', 0)">
+                                <img src="${escapeHtml(item.image)}" alt="treasure">
+                            </div>
+                        </div>
+                    `;
+                }
+                
+                html += `
+                    <div class="treasure-card">
+                        ${dateHtml}
+                        <div class="title">${escapeHtml(item.title || item.text)}</div>
+                        ${item.description ? `<div class="description">${escapeHtml(item.description)}</div>` : ''}
+                        ${imagesHtml}
+                        <div class="meta-footer">
+                            ${sourcesHtml}
+                            ${timeHtml}
+                        </div>
+                    </div>
+                `;
+            });
+            
+            html += '</div>';
+            return html;
+        }
+
+        // 渲染详情列表
+        function renderDetailList() {
+            const filtered = getFilteredDetails();
+            
+            let titleText = '📋 ';
+            if (currentCategory === 'treasure') {
+                titleText = '💗 安利';
+            } else if (currentCategory === 'all') {
+                titleText += '全部动态';
+            } else {
+                titleText += categoryMap[currentCategory] || currentCategory;
+            }
+            
+            if (currentCategory !== 'treasure') {
+                if (selectedYear !== 'all') titleText += ` ${selectedYear}年`;
+                if (selectedMonth !== 'all') titleText += ` ${selectedMonth}月`;
+            }
+            
+            detailTitle.innerHTML = `${titleText} <span>${filtered.length}条</span>`;
+            
+            if (filtered.length === 0) {
+                detailList.innerHTML = '<div class="no-data">✨ 没有符合条件的动态</div>';
+                return;
+            }
+            
+            // 安利使用特殊渲染
+            if (currentCategory === 'treasure') {
+                detailList.innerHTML = renderTreasureBox();
+                return;
+            }
+            
+            // 普通动态渲染
+            let html = '';
+            filtered.forEach((item, index) => {
+                const idxStr = String(index + 1).padStart(2, '0');
+                const timeHtml = item.time ? `<span class="item-time">${item.time}</span>` : '';
+                
+                // 判断是否有图片 - 统一使用新的图片样式
+                if (item.images && item.images.length > 0 || item.image) {
+                    // 获取第一张图片
+                    const firstImage = item.images ? item.images[0] : item.image;
+                    const imagesJson = item.images ? safeJsonStringify(item.images) : (item.image ? safeJsonStringify([item.image]) : null);
+                    const imageCount = item.images ? item.images.length : 1;
+                    
+                    // 处理来源
+                    let titleContent = '';
+                    let sourceBadgeHtml = '';
+                    
+                    if (item.sources && item.sources.length > 0) {
+                        if (item.sources.length === 1) {
+                            const source = item.sources[0];
+                            const tooltipText = formatSourceTooltip(source);
+                            
+                            let badgeParts = [];
+                            if (source.platform) badgeParts.push(source.platform);
+                            if (source.quality) badgeParts.push(source.quality);
+                            const badgeText = badgeParts.join('·');
+                            
+                            titleContent = `
+                                <a href="${escapeHtml(source.link)}" 
+                                   target="_blank" 
+                                   class="source-tooltip" 
+                                   data-tooltip="${escapeHtml(tooltipText)}">
+                                    ${escapeHtml(item.text)}
+                                </a>
+                            `;
+                            
+                            if (badgeText) {
+                                sourceBadgeHtml = `<span class="source-badge-plain">${badgeText}</span>`;
+                            }
+                        } else {
+                            const displayText = formatMultipleSources(item.sources);
+                            const sourcesJson = safeJsonStringify(item.sources);
+                            titleContent = `
+                                <a href="javascript:void(0)" 
+                                   onclick="event.stopPropagation(); window.openDetailModal('${escapeHtml(item.text)}', '${sourcesJson}')"
+                                   style="cursor: pointer; color: #0066cc; border-bottom: 1px dotted #99b5dd;">
+                                    ${escapeHtml(item.text)}
+                                </a>
+                            `;
+                            sourceBadgeHtml = `
+                                <span class="source-multi-badge" 
+                                      onclick="event.stopPropagation(); window.openDetailModal('${escapeHtml(item.text)}', '${sourcesJson}')">
+                                    ${displayText}
+                                </span>
+                            `;
+                        }
+                    } else {
+                        titleContent = `<span style="color: #1d2b3f;">${escapeHtml(item.text)}</span>`;
+                    }
+                    
+                    // 图片数量标识 - 只有多张图片才显示
+                    const countBadge = imageCount > 1 ? `<span class="image-count-badge">📷 ${imageCount}</span>` : '';
+                    
+                    html += `
+                        <div class="detail-item with-image-uniform">
+                            <span class="item-index">${idxStr}</span>
+                            <div class="item-content-main">
+                                <div class="item-content">${titleContent}</div>
+                                <div class="item-meta">
+                                    <span class="item-date-badge">📅 ${item.displayDate}</span>
+                                    ${timeHtml}
+                                    ${sourceBadgeHtml}
+                                </div>
+                            </div>
+                            <div class="item-image-wrapper" onclick="event.stopPropagation(); ${imagesJson ? `window.openModal('${imagesJson}', 0)` : '#'}">
+                                <img src="${escapeHtml(firstImage)}" alt="thumb" onerror="this.style.display='none';this.parentElement.innerHTML='📷';">
+                                ${countBadge}
+                            </div>
+                        </div>
+                    `;
+                } else {
+                    // 无图片
+                    let contentHtml = '';
+                    let sourceBadgeHtml = '';
+                    
+                    if (item.sources && item.sources.length > 0) {
+                        if (item.sources.length === 1) {
+                            const source = item.sources[0];
+                            const tooltipText = formatSourceTooltip(source);
+                            
+                            let badgeParts = [];
+                            if (source.platform) badgeParts.push(source.platform);
+                            if (source.quality) badgeParts.push(source.quality);
+                            const badgeText = badgeParts.join('·');
+                            
+                            contentHtml = `
+                                <a href="${escapeHtml(source.link)}" 
+                                   target="_blank" 
+                                   class="detail-link source-tooltip" 
+                                   data-tooltip="${escapeHtml(tooltipText)}">
+                                    ${escapeHtml(item.text)}
+                                </a>
+                            `;
+                            
+                            if (badgeText) {
+                                sourceBadgeHtml = `<span class="source-badge-plain">${badgeText}</span>`;
+                            }
+                        } else {
+                            const displayText = formatMultipleSources(item.sources);
+                            const sourcesJson = safeJsonStringify(item.sources);
+                            contentHtml = `
+                                <a href="javascript:void(0)" 
+                                   onclick="event.stopPropagation(); window.openDetailModal('${escapeHtml(item.text)}', '${sourcesJson}')"
+                                   style="cursor: pointer; color: #0066cc; border-bottom: 1px dotted #99b5dd;">
+                                    ${escapeHtml(item.text)}
+                                </a>
+                            `;
+                            sourceBadgeHtml = `
+                                <span class="source-multi-badge" 
+                                      onclick="event.stopPropagation(); window.openDetailModal('${escapeHtml(item.text)}', '${sourcesJson}')">
+                                    ${displayText}
+                                </span>
+                            `;
+                        }
+                    } else {
+                        contentHtml = `<span style="color: #1d2b3f;">${escapeHtml(item.text)}</span>`;
+                    }
+                    
+                    html += `
+                        <div class="detail-item">
+                            <span class="item-index">${idxStr}</span>
+                            <div class="item-content">
+                                <div style="display: flex; align-items: center; gap: 8px; flex-wrap: wrap;">
+                                    ${contentHtml}
+                                </div>
+                                <div class="item-meta">
+                                    <span class="item-date-badge">📅 ${item.displayDate}</span>
+                                    ${timeHtml}
+                                    ${sourceBadgeHtml}
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                }
+            });
+            detailList.innerHTML = html;
+        }
+
+        // 渲染年历
+        function renderYearCalendar(year) {
+            const months = Array.from({ length: 12 }, (_, i) => i + 1);
+            const weekdays = ['日', '一', '二', '三', '四', '五', '六'];
+            
+            let html = '<div class="year-calendar">';
+            
+            months.forEach(month => {
+                const daysWithEvents = new Set();
+                Object.keys(allData).forEach(dateStr => {
+                    const [y, m, d] = dateStr.split('-').map(Number);
+                    if (y === year && m === month) {
+                        daysWithEvents.add(d);
+                    }
+                });
+                
+                const daysInMonth = new Date(year, month, 0).getDate();
+                const firstDay = new Date(year, month - 1, 1).getDay();
+                
+                let daysHtml = '';
+                for (let i = 0; i < firstDay; i++) daysHtml += '<div class="preview-day"></div>';
+                for (let d = 1; d <= daysInMonth; d++) {
+                    daysHtml += `<div class="preview-day ${daysWithEvents.has(d) ? 'has-event' : ''}">${d}</div>`;
+                }
+                
+                html += `
+                    <div class="month-card" data-year="${year}" data-month="${month}">
+                        <h4>${month}月</h4>
+                        <div class="month-preview">${weekdays.map(w => `<span class="preview-weekday">${w}</span>`).join('')}</div>
+                        <div class="preview-days">${daysHtml}</div>
+                        <div class="month-stats">
+                            <span>📅 ${daysInMonth}天</span>
+                            <span>📌 ${daysWithEvents.size}个动态日</span>
+                        </div>
+                    </div>
+                `;
+            });
+            
+            html += '</div>';
+            calendarLeft.innerHTML = html;
+            
+            document.querySelectorAll('.month-card').forEach(card => {
+                card.addEventListener('click', function() {
+                    const year = this.getAttribute('data-year');
+                    const month = this.getAttribute('data-month');
+                    
+                    yearFilter.value = year;
+                    monthFilter.value = month;
+                    selectedYear = year;
+                    selectedMonth = month;
+                    
+                    renderDetailList();
+                    renderCalendar();
+                });
+            });
+        }
+
+        // 渲染月历
+        function renderMonthCalendar() {
+            const year = parseInt(selectedYear);
+            const month = parseInt(selectedMonth);
+            
+            const daysInMonth = new Date(year, month, 0).getDate();
+            const firstDay = new Date(year, month - 1, 1).getDay();
+            
+            let html = `
+                <div class="week-row">
+                    <span>日</span><span>一</span><span>二</span><span>三</span><span>四</span><span>五</span><span>六</span>
+                </div>
+                <div class="dates-grid">
+            `;
+            
+            for (let i = 0; i < firstDay; i++) {
+                html += `<div class="date-cell other-month"><div class="day-num"></div><div class="event-tags"></div></div>`;
+            }
+            
+            for (let day = 1; day <= daysInMonth; day++) {
+                const dateStr = `${year}-${String(month).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
+                const data = allData[dateStr];
+                
+                let tagsHtml = '';
+                if (data && data.tags) {
+                    const filteredTags = currentCategory === 'all' 
+                        ? data.tags 
+                        : data.tags.filter(tag => tag.category === currentCategory);
+                    
+                    filteredTags.forEach(tag => {
+                        tagsHtml += `<span class="event-tag ${tag.type}">${escapeHtml(tag.text)}</span>`;
+                    });
+                }
+                
+                html += `
+                    <div class="date-cell" data-date="${dateStr}">
+                        <div class="day-num">${day}</div>
+                        <div class="event-tags">${tagsHtml}</div>
+                    </div>
+                `;
+            }
+            
+            const totalCells = Math.ceil((firstDay + daysInMonth) / 7) * 7;
+            const remainingCells = totalCells - (firstDay + daysInMonth);
+            for (let i = 0; i < remainingCells; i++) {
+                html += `<div class="date-cell other-month"><div class="day-num"></div><div class="event-tags"></div></div>`;
+            }
+            
+            html += '</div>';
+            calendarLeft.innerHTML = html;
+
+            document.querySelectorAll('.date-cell[data-date]').forEach(cell => {
+                cell.addEventListener('click', function() {
+                    const dateStr = this.getAttribute('data-date');
+                    const data = allData[dateStr];
+                    
+                    if (data) {
+                        const filteredDetails = (currentCategory === 'all' && data.details) 
+                            ? data.details 
+                            : (data.details ? data.details.filter(d => d.categories && d.categories.includes(currentCategory)) : []);
+                        
+                        if (filteredDetails.length > 0) {
+                            let html = '';
+                            filteredDetails.forEach((item, idx) => {
+                                const idxStr = String(idx + 1).padStart(2, '0');
+                                const timeHtml = item.time ? `<span class="item-time">${item.time}</span>` : '';
+                                
+                                // 判断是否有图片 - 统一使用新的图片样式
+                                if (item.images && item.images.length > 0 || item.image) {
+                                    // 获取第一张图片
+                                    const firstImage = item.images ? item.images[0] : item.image;
+                                    const imagesJson = item.images ? safeJsonStringify(item.images) : (item.image ? safeJsonStringify([item.image]) : null);
+                                    const imageCount = item.images ? item.images.length : 1;
+                                    
+                                    // 处理来源
+                                    let titleContent = '';
+                                    let sourceBadgeHtml = '';
+                                    
+                                    if (item.sources && item.sources.length > 0) {
+                                        if (item.sources.length === 1) {
+                                            const source = item.sources[0];
+                                            const tooltipText = formatSourceTooltip(source);
+                                            
+                                            let badgeParts = [];
+                                            if (source.platform) badgeParts.push(source.platform);
+                                            if (source.quality) badgeParts.push(source.quality);
+                                            const badgeText = badgeParts.join('·');
+                                            
+                                            titleContent = `
+                                                <a href="${escapeHtml(source.link)}" 
+                                                   target="_blank" 
+                                                   class="source-tooltip" 
+                                                   data-tooltip="${escapeHtml(tooltipText)}">
+                                                    ${escapeHtml(item.text)}
+                                                </a>
+                                            `;
+                                            
+                                            if (badgeText) {
+                                                sourceBadgeHtml = `<span class="source-badge-plain">${badgeText}</span>`;
+                                            }
+                                        } else {
+                                            const displayText = formatMultipleSources(item.sources);
+                                            const sourcesJson = safeJsonStringify(item.sources);
+                                            titleContent = `
+                                                <a href="javascript:void(0)" 
+                                                   onclick="event.stopPropagation(); window.openDetailModal('${escapeHtml(item.text)}', '${sourcesJson}')"
+                                                   style="cursor: pointer; color: #0066cc; border-bottom: 1px dotted #99b5dd;">
+                                                    ${escapeHtml(item.text)}
+                                                </a>
+                                            `;
+                                            sourceBadgeHtml = `
+                                                <span class="source-multi-badge" 
+                                                      onclick="event.stopPropagation(); window.openDetailModal('${escapeHtml(item.text)}', '${sourcesJson}')">
+                                                    ${displayText}
+                                                </span>
+                                            `;
+                                        }
+                                    } else {
+                                        titleContent = `<span style="color: #1d2b3f;">${escapeHtml(item.text)}</span>`;
+                                    }
+                                    
+                                    // 图片数量标识 - 只有多张图片才显示
+                                    const countBadge = imageCount > 1 ? `<span class="image-count-badge">📷 ${imageCount}</span>` : '';
+                                    
+                                    html += `
+                                        <div class="detail-item with-image-uniform">
+                                            <span class="item-index">${idxStr}</span>
+                                            <div class="item-content-main">
+                                                <div class="item-content">${titleContent}</div>
+                                                <div class="item-meta">
+                                                    <span class="item-date-badge">📅 ${dateStr}</span>
+                                                    ${timeHtml}
+                                                    ${sourceBadgeHtml}
+                                                </div>
+                                            </div>
+                                            <div class="item-image-wrapper" onclick="event.stopPropagation(); ${imagesJson ? `window.openModal('${imagesJson}', 0)` : '#'}">
+                                                <img src="${escapeHtml(firstImage)}" alt="thumb" onerror="this.style.display='none';this.parentElement.innerHTML='📷';">
+                                                ${countBadge}
+                                            </div>
+                                        </div>
+                                    `;
+                                } else {
+                                    // 无图片
+                                    let contentHtml = '';
+                                    let sourceBadgeHtml = '';
+                                    
+                                    if (item.sources && item.sources.length > 0) {
+                                        if (item.sources.length === 1) {
+                                            const source = item.sources[0];
+                                            const tooltipText = formatSourceTooltip(source);
+                                            
+                                            let badgeParts = [];
+                                            if (source.platform) badgeParts.push(source.platform);
+                                            if (source.quality) badgeParts.push(source.quality);
+                                            const badgeText = badgeParts.join('·');
+                                            
+                                            contentHtml = `
+                                                <a href="${escapeHtml(source.link)}" 
+                                                   target="_blank" 
+                                                   class="source-tooltip" 
+                                                   data-tooltip="${escapeHtml(tooltipText)}">
+                                                    ${escapeHtml(item.text)}
+                                                </a>
+                                            `;
+                                            
+                                            if (badgeText) {
+                                                sourceBadgeHtml = `<span class="source-badge-plain">${badgeText}</span>`;
+                                            }
+                                        } else {
+                                            const displayText = formatMultipleSources(item.sources);
+                                            const sourcesJson = safeJsonStringify(item.sources);
+                                            contentHtml = `
+                                                <a href="javascript:void(0)" 
+                                                   onclick="event.stopPropagation(); window.openDetailModal('${escapeHtml(item.text)}', '${sourcesJson}')"
+                                                   style="cursor: pointer; color: #0066cc; border-bottom: 1px dotted #99b5dd;">
+                                                    ${escapeHtml(item.text)}
+                                                </a>
+                                            `;
+                                            sourceBadgeHtml = `
+                                                <span class="source-multi-badge" 
+                                                      onclick="event.stopPropagation(); window.openDetailModal('${escapeHtml(item.text)}', '${sourcesJson}')">
+                                                    ${displayText}
+                                                </span>
+                                            `;
+                                        }
+                                    } else {
+                                        contentHtml = `<span style="color: #1d2b3f;">${escapeHtml(item.text)}</span>`;
+                                    }
+                                    
+                                    html += `
+                                        <div class="detail-item">
+                                            <span class="item-index">${idxStr}</span>
+                                            <div class="item-content">
+                                                <div style="display: flex; align-items: center; gap: 8px; flex-wrap: wrap;">
+                                                    ${contentHtml}
+                                                </div>
+                                                <div class="item-meta">
+                                                    <span class="item-date-badge">📅 ${dateStr}</span>
+                                                    ${timeHtml}
+                                                    ${sourceBadgeHtml}
+                                                </div>
+                                            </div>
+                                        </div>
+                                    `;
+                                }
+                            });
+                            detailTitle.innerHTML = `📋 ${dateStr} 动态 <span>${filteredDetails.length}条</span>`;
+                            detailList.innerHTML = html;
+                        } else {
+                            detailTitle.innerHTML = `📋 ${dateStr} 动态 <span>0条</span>`;
+                            detailList.innerHTML = '<div class="no-data">✨ 该日期没有详细动态</div>';
+                        }
+                    }
+                });
+            });
+        }
+
+        // 主渲染函数
+        function renderCalendar() {
+            if (currentCategory === 'treasure') {
+                // 安利模式：隐藏日历和筛选栏
+                mainPanel.classList.add('calendar-hidden');
+                filterBar.style.display = 'none';
+                calendarLeft.innerHTML = '';
+            } else {
+                filterBar.style.display = 'flex';
+                if (selectedYear === 'all' && selectedMonth === 'all') {
+                    mainPanel.classList.add('calendar-hidden');
+                    calendarLeft.innerHTML = '';
+                } else if (selectedYear !== 'all' && selectedMonth === 'all') {
+                    mainPanel.classList.remove('calendar-hidden');
+                    renderYearCalendar(parseInt(selectedYear));
+                } else if (selectedYear !== 'all' && selectedMonth !== 'all') {
+                    mainPanel.classList.remove('calendar-hidden');
+                    renderMonthCalendar();
+                } else {
+                    mainPanel.classList.add('calendar-hidden');
+                }
+            }
+        }
+
+        // 事件监听
+        const categoryTabs = document.querySelectorAll('.nav-tab');
+        categoryTabs.forEach(tab => {
+            tab.addEventListener('click', function() {
+                categoryTabs.forEach(t => t.classList.remove('active'));
+                this.classList.add('active');
+                currentCategory = this.getAttribute('data-category');
+                
+                renderDetailList();
+                renderCalendar();
+            });
+        });
+
+        yearFilter.addEventListener('change', function() {
+            selectedYear = this.value;
+            
+            const { monthsByYear } = getAvailableYearsMonths();
+            
+            if (selectedYear === 'all') {
+                const allMonths = new Set();
+                Object.values(monthsByYear).forEach(months => {
+                    months.forEach(m => allMonths.add(m));
+                });
+                
+                let monthOptions = '<option value="all">全部月份</option>';
+                Array.from(allMonths).sort((a, b) => a - b).forEach(month => {
+                    monthOptions += `<option value="${month}">${month}月</option>`;
+                });
+                monthFilter.innerHTML = monthOptions;
+                
+                selectedMonth = 'all';
+                monthFilter.value = 'all';
+            } else {
+                const availableMonths = monthsByYear[parseInt(selectedYear)] || new Set();
+                
+                let monthOptions = '<option value="all">全部月份</option>';
+                Array.from(availableMonths).sort((a, b) => a - b).forEach(month => {
+                    monthOptions += `<option value="${month}">${month}月</option>`;
+                });
+                monthFilter.innerHTML = monthOptions;
+                
+                const firstMonth = Array.from(availableMonths).sort((a, b) => a - b)[0];
+                selectedMonth = firstMonth ? String(firstMonth) : 'all';
+                monthFilter.value = selectedMonth;
+            }
+            
+            renderDetailList();
+            renderCalendar();
+        });
+
+        monthFilter.addEventListener('change', function() {
+            selectedMonth = this.value;
+            if (selectedMonth !== 'all' && selectedYear === 'all') {
+                selectedYear = String(defaultYear);
+                yearFilter.value = String(defaultYear);
+            }
+            renderDetailList();
+            renderCalendar();
+        });
+
+        clearFilterBtn.addEventListener('click', function() {
+            categoryTabs.forEach(t => t.classList.remove('active'));
+            document.querySelector('[data-category="all"]').classList.add('active');
+            currentCategory = 'all';
+            
+            selectedYear = 'all';
+            selectedMonth = 'all';
+            yearFilter.value = 'all';
+            monthFilter.value = 'all';
+            
+            renderDetailList();
+            renderCalendar();
+        });
+
+        todayBtn.addEventListener('click', function() {
+            selectedYear = String(currentYear);
+            selectedMonth = String(currentMonth);
+            
+            yearFilter.value = String(currentYear);
+            
+            const { monthsByYear } = getAvailableYearsMonths();
+            
+            if (monthsByYear[currentYear] && monthsByYear[currentYear].size > 0) {
+                const availableMonths = monthsByYear[currentYear];
+                let monthOptions = '<option value="all">全部月份</option>';
+                Array.from(availableMonths).sort((a, b) => a - b).forEach(month => {
+                    monthOptions += `<option value="${month}" ${month === currentMonth ? 'selected' : ''}>${month}月</option>`;
+                });
+                monthFilter.innerHTML = monthOptions;
+                monthFilter.value = String(currentMonth);
+            } else {
+                const nearest = findNearestAvailableDate(currentYear, currentMonth);
+                selectedYear = String(nearest.year);
+                selectedMonth = String(nearest.month);
+                yearFilter.value = String(nearest.year);
+                
+                const nearestMonths = monthsByYear[nearest.year] || new Set([nearest.month]);
+                let monthOptions = '<option value="all">全部月份</option>';
+                Array.from(nearestMonths).sort((a, b) => a - b).forEach(month => {
+                    monthOptions += `<option value="${month}" ${month === nearest.month ? 'selected' : ''}>${month}月</option>`;
+                });
+                monthFilter.innerHTML = monthOptions;
+                monthFilter.value = String(nearest.month);
+            }
+            
+            renderDetailList();
+            renderCalendar();
+        });
+
+        // 初始化
+        document.querySelector('[data-category="all"]').classList.add('active');
+        renderDetailList();
+        renderCalendar();
+    })();
+</script>
+</body>
+</html>
