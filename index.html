@@ -924,15 +924,55 @@
                 max-height: 400px;
                 overflow-y: auto;
             }
-            
-            /* 横屏优化 */
+
+            /* 月历格子简化（竖屏用） */
+            .date-cell {
+                min-height: 60px;
+                max-height: 60px;
+                padding: 4px;
+            }
+
+            .event-tags {
+                display: none;
+            }
+    
+            .date-cell.has-event .day-num::after {
+                content: '•';
+                color: #2d6ff7;
+                font-size: 16px;
+                margin-left: 2px;
+            }
+    
+            /* 横屏时改成左右布局 */
             @media (orientation: landscape) {
+                .main-panel {
+                    flex-direction: row;
+                    gap: 15px;
+                }
                 .calendar-left {
-                    max-height: 70vh;
+                    flex: 1;
+                    max-height: 80vh;
+                    margin-bottom: 0;
                 }
                 
                 .detail-right {
-                    max-height: 70vh;
+                    flex: 1;
+                    max-height: 80vh;
+                }
+ 
+               /* 横屏时月历恢复正常显示 */
+                .date-cell {
+                    min-height: 100px;
+                    max-height: 100px;
+                    padding: 8px;
+                }
+        
+                .event-tags {
+                    display: flex;
+                }
+        
+                .date-cell.has-event .day-num::after {
+                    display: none;
                 }
             }
             
