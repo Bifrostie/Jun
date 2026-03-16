@@ -903,6 +903,28 @@
             color: #0066cc;
         }
 
+        /* 搜索框样式 */
+        .search-item {
+            flex: 1;
+            min-width: 200px;
+            padding: 3px 10px 3px 14px;
+        }
+
+        .search-item input {
+            border: none;
+            background: transparent;
+            font-size: 14px;
+            padding: 6px 5px;
+            outline: none;
+            width: 100%;
+            color: #111827;
+        }
+
+        .search-item input::placeholder {
+            color: #8e9db0;
+            font-size: 13px;
+        }
+
         /* ===== 移动端优化样式（不影响电脑端） ===== */
         @media (max-width: 1000px) {
             /* 手机端完全隐藏月历 */
@@ -978,6 +1000,9 @@
                     <option value="all">全部日期</option>
                 </select>
             </div>
+        </div>
+        <div class="filter-item search-item">
+            <input type="text" id="searchInput" placeholder="🔍 搜索关键词...">
         </div>
         <div class="button-group">
             <button class="clear-filter" id="todayBtn">📅 今天</button>
@@ -2491,6 +2516,10 @@
 
         // ========== 核心筛选函数 ==========
         function getFilteredDetails() {
+            // 新增：获取搜索关键词
+            const searchInput = document.getElementById('searchInput');
+            const searchTerm = searchInput ? searchInput.value.trim().toLowerCase() : '';
+
             // 如果是安利分类，直接返回 treasureData
             if (currentCategory === 'treasure') {
                 return treasureData.map(item => ({
@@ -2531,6 +2560,13 @@
             });
 
             filtered.sort((a, b) => a.fullDate.localeCompare(b.fullDate));
+            // 新增：按关键词搜索
+            if (searchTerm) {
+                filtered = filtered.filter(item => 
+                    item.text.toLowerCase().includes(searchTerm)
+                );
+            }
+    
             return filtered;
         }
 
@@ -2626,7 +2662,14 @@
             } else {
                 titleText += categoryMap[currentCategory] || currentCategory;
             }
-            
+
+            // 新增：如果正在搜索，在标题上显示
+            const searchInput = document.getElementById('searchInput');
+            const searchTerm = searchInput ? searchInput.value.trim() : '';
+            if (searchTerm) {
+                titleText += ` · 搜索 "${searchTerm}"`;
+            }
+                
             if (currentCategory !== 'treasure') {
                 if (selectedYear !== 'all') titleText += ` ${selectedYear}年`;
                 if (selectedMonth !== 'all') titleText += ` ${selectedMonth}月`;
@@ -3282,6 +3325,14 @@
             renderDetailList();
             renderCalendar();
         });
+
+        // 搜索框事件
+        const searchInput = document.getElementById('searchInput');
+        if (searchInput) {
+            searchInput.addEventListener('input', function() {
+                renderDetailList();  // 实时搜索
+            });
+        }
 
         // 初始化
         document.querySelector('[data-category="all"]').classList.add('active');
