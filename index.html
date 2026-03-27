@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>林孝埈 · Lin Xiaojun</title>
+    <link rel="stylesheet" href="style.css">
+    <!-- Google Translate 脚本 -->
+    <script type="text/javascript">
+        function googleTranslateElementInit() {
+            new google.translate.TranslateElement({
+                pageLanguage: 'zh-CN',
+                includedLanguages: 'zh-CN,en,ko',
+                layout: google.translate.TranslateElement.InlineLayout.SIMPLE,
+                autoDisplay: false
+            }, 'google_translate_element');
+        }
+    </script>
+    <script type="text/javascript" src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
+</head>
+<body>
+<div class="calendar-page">
+    <div class="header">
+        <h1>林孝埈<span> · Lin Xiaojun</span></h1>
+        <div class="header-tip">📌 安利不受年月限制 · <a href="#">私信捉虫</a></div>
+    </div>
+
+    <!-- 分类导航 -->
+    <div class="nav-tabs" id="categoryTabs">
+        <span class="nav-tab active" data-category="all">📋 全部动态</span>
+        <span class="nav-tab" data-category="race">🏆 比赛</span>
+        <span class="nav-tab" data-category="interview">🎤 采访</span>
+        <span class="nav-tab" data-category="activity">📸 活动</span>
+        <span class="nav-tab" data-category="sns">💬 SNS</span>
+        <span class="nav-tab" data-category="record">📌 记录</span>
+        <span class="nav-tab" data-category="treasure">💗 安利</span>
+        <span class="nav-tab" data-category="message">💬 留言板</span>
+    </div>
+
+    <!-- 筛选栏（添加语言按钮） -->
+    <div class="filter-bar" id="filterBar">
+        <span class="filter-label">🔍 筛选：</span>
+        <div class="filter-select-group">
+            <div class="filter-item">
+                <label for="yearFilter">年</label>
+                <select id="yearFilter">
+                    <option value="all">全部年份</option>
+                </select>
+            </div>
+            <div class="filter-item">
+                <label for="monthFilter">月</label>
+                <select id="monthFilter">
+                    <option value="all">全部月份</option>
+                </select>
+            </div>
+            <div class="filter-item">
+                <label for="dayFilter">日</label>
+                <select id="dayFilter">
+                    <option value="all">全部日期</option>
+                </select>
+            </div>
+        </div>
+        <div class="filter-item search-item">
+            <input type="text" id="searchInput" placeholder="🔍 搜索关键词...">
+        </div>
+        <div class="button-group">
+            <button class="clear-filter" id="todayBtn">📅 今天</button>
+            <button class="clear-filter" id="clearFilterBtn">清除筛选</button>
+            <button class="clear-filter lang-btn" id="translateBtn">🌐 语言</button>
+        </div>
+        <!-- 隐藏的 Google 翻译容器 -->
+        <div id="google_translate_element" style="display: none;"></div>
+    </div>
+
+    <div class="main-panel" id="mainPanel">
+        <div class="calendar-left" id="calendarLeft"></div>
+        <div class="detail-right" id="detailPanel">
+            <h3 id="detailTitle">📋 全部动态 <span>0条</span></h3>
+            <div class="detail-list" id="detailList">
+                <div class="no-data">⏳ 加载中...</div>
+            </div>
+        </div>
+    </div>
+
+    <div class="footer-note">
+        <span>🐾 林孝埈动态日历 · 持续更新中</span>
+    </div>
+</div>
+
+<!-- 图片查看模态框 -->
+<div class="modal" id="imageModal">
+    <span class="modal-close" id="modalClose">&times;</span>
+    <span class="modal-prev" id="modalPrev">&#10094;</span>
+    <span class="modal-next" id="modalNext">&#10095;</span>
+    <div class="modal-content">
+        <img id="modalImage" src="" alt="">
+    </div>
+</div>
+
+<!-- 详情弹窗 -->
+<div class="detail-modal" id="detailModal">
+    <div class="detail-modal-content">
+        <div class="detail-modal-header">
+            <h3 id="detailModalTitle"></h3>
+            <span class="detail-modal-close" id="detailModalClose">&times;</span>
+        </div>
+        <div class="detail-modal-body" id="detailModalBody"></div>
+    </div>
+</div>
+
+<script src="script.js"></script>
+</body>
+</html>
