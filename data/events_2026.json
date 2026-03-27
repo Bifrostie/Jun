@@ -1,0 +1,272 @@
+{
+  "2026-02-01": {
+    "tags": [
+      { "text": "🏆 世锦赛1500m", "type": "type-race", "category": "race" },
+      { "text": "💬 日常更新", "type": "type-sns", "category": "sns" },
+      { "text": "📸 官方合照", "type": "type-activity", "category": "activity" }
+    ],
+    "details": [
+      {
+        "text": "🏆 [直拍] 林孝埈 世锦赛1500m 半决赛 全场焦点",
+        "time": "15:30",
+        "sources": [{ "title": "B站 完整版", "link": "https://www.bilibili.com/video/BV20260201", "platform": "Bilibili" }],
+        "categories": ["race"],
+        "images": [
+          "https://picsum.photos/200/200?random=16",
+          "https://picsum.photos/200/200?random=17",
+          "https://picsum.photos/200/200?random=18"
+        ]
+      },
+      {
+        "text": "💬 日常分享：与奖牌的自拍 💗“谢谢大家”",
+        "time": "19:22",
+        "sources": [{ "title": "Instagram 原帖", "link": "https://www.instagram.com/20260201", "platform": "Instagram" }],
+        "categories": ["sns"]
+      },
+      {
+        "text": "📸 官推：世锦赛首金 后台合照",
+        "time": "20:10",
+        "sources": [{ "title": "Twitter 原帖", "link": "https://twitter.com/20260201", "platform": "Twitter" }],
+        "categories": ["activity"]
+      },
+      {
+        "text": "📌 训练花絮 官方更新",
+        "time": "21:05",
+        "sources": [{ "title": "B站 完整版", "link": "https://www.bilibili.com/video/BV20260201a", "platform": "Bilibili" }],
+        "categories": ["record"]
+      },
+      {
+        "text": "🎤 赛后采访 中字完整版",
+        "time": "22:30",
+        "sources": [{ "title": "YouTube 完整版", "link": "https://www.youtube.com/20260201", "platform": "YouTube" }],
+        "categories": ["interview"]
+      },
+      {
+        "text": "💬 日常：明天继续加油",
+        "time": "23:17",
+        "sources": [{ "title": "微博 原帖", "link": "https://weibo.com/20260201", "platform": "Weibo" }],
+        "categories": ["sns"]
+      }
+    ]
+  },
+  "2026-02-07": {
+    "tags": [
+      { "text": "🧣 微博转发-🇨🇳💪🏻", "type": "type-sns", "category": "sns" }
+    ],
+    "details": [
+      {
+        "text": "🧣 微博转发-🇨🇳💪🏻·Team China米兰冬奥开幕式",
+        "time": "04:33",
+        "sources": [{ "title": "微博 原帖", "link": "https://weibo.com/7725970927/5263543483760804", "platform": "Weibo" }],
+        "categories": ["sns"]
+      }
+    ]
+  },
+  "2026-02-21": {
+    "tags": [
+      { "text": "🧣 微博更新-米兰冬奥会·四个感谢", "type": "type-sns", "category": "sns" }
+    ],
+    "details": [
+      {
+        "text": "🧣 微博更新-米兰冬奥会·四个感谢",
+        "time": "22:15",
+        "sources": [{ "title": "微博 原帖", "link": "https://weibo.com/7725970927/5268884141379626", "platform": "Weibo" }],
+        "categories": ["sns"]
+      }
+    ]
+  },
+  "2026-02-25": {
+    "tags": [
+      { "text": "💬 微博评论区更新-🐼", "type": "type-sns", "category": "sns" }
+    ],
+    "details": [
+      {
+        "text": "💬 微博评论区更新-🐼",
+        "time": "21:32",
+        "sources": [{ "title": "微博 原帖", "link": "https://weibo.com/7725970927/5268884141379626", "platform": "Weibo" }],
+        "categories": ["sns"]
+      }
+    ]
+  },
+  "2026-03-04": {
+    "tags": [
+      { "text": "📌 捐赠头盔", "type": "type-record", "category": "record" }
+    ],
+    "details": [
+      {
+        "text": "📌 小林向奥林匹克博物馆捐赠头盔",
+        "sources": [{ "title": "olympicmuseum-ins快拍更新相关: 林孝埈捐赠头盔", "link": "https://www.youtube.com/20260305", "platform": "YouTube" }],
+        "categories": ["activity"]
+      }
+    ]
+  },
+  "2026-03-06": {
+    "tags": [
+      { "text": "📸 品牌合作-沃尔沃互动", "type": "type-activity", "category": "activity" }
+    ],
+    "details": [
+      {
+        "text": "📸 品牌合作-沃尔沃互动",
+        "time": "10:00",
+        "sources": [
+          { "title": "小林更新微博并点赞", "link": "https://weibo.com/7725970927/5273410080342975", "platform": "Weibo", "author": "林孝埈Lin_xiaojun" },
+          { "title": "沃尔沃转发互动", "link": "https://weibo.com/1891845373/5273411245839719", "platform": "Weibo", "author": "沃尔沃汽车VolvoCars" },
+          { "title": "小林微博关注沃尔沃", "link": "https://weibo.com/7832568510/5273910473133039", "platform": "Weibo", "author": "林孝埈Lin_xiaojun" },
+          { "title": "沃尔沃微博关注小林", "link": "https://weibo.com/7832568510/5273910473133039", "platform": "Weibo", "author": "沃尔沃汽车VolvoCars" },
+          { "title": "小林点赞沃尔沃1月官宣微博和相关视频", "link": "https://weibo.com/7832568510/5273910473133039", "platform": "Weibo", "author": "林孝埈Lin_xiaojun" }
+        ],
+        "categories": ["activity", "sns"]
+      }
+    ]
+  },
+  "2026-03-07": {
+    "tags": [
+      { "text": "🧣 微博点赞-米兰冬残奥首金", "type": "type-sns", "category": "sns" }
+    ],
+    "details": [
+      {
+        "text": "🧣 微博点赞-米兰冬残奥会中国首金",
+        "time": "20:53",
+        "sources": [
+          { "title": "点赞记录", "link": "https://weibo.com/7832568510/5273959865258799", "platform": "Weibo", "author": "林孝埈Lin_xiaojun｜-Bifröst-" },
+          { "title": "新华社原博", "link": "https://weibo.com/1699432410/5273929373451031", "platform": "Weibo", "author": "新华社" }
+        ],
+        "categories": ["sns"]
+      }
+    ]
+  },
+  "2026-03-09": {
+    "tags": [
+      { "text": "📕 小红书更新", "type": "type-sns", "category": "sns" }
+    ],
+    "details": [
+      {
+        "text": "📕 小红书更新-快乐假期",
+        "sources": [{ "title": "快乐假期 #帅气的运动员#", "link": "http://xhslink.com/o/11ndfOwlVcP", "platform": "Rednote", "author": "林孝埈" }],
+        "categories": ["sns"]
+      }
+    ]
+  },
+  "2026-03-13": {
+    "tags": [
+      { "text": "📸 上海恒隆宇舶", "type": "type-activity", "category": "activity" }
+    ],
+    "details": [
+      {
+        "text": "📕 上海恒隆HUBLOT宇舶表龙龙小红书更新合照·260313拍摄",
+        "sources": [{ "title": "上海恒隆宇舶小红书更新-林孝埈～与冠军同一个机位", "link": "http://xhslink.com/o/2eRP2kFpfPs", "platform": "Rednote", "author": "上海恒隆HUBLOT宇舶表龙龙" }],
+        "categories": ["activity"]
+      }
+    ]
+  },
+  "2026-03-14": {
+    "tags": [
+      { "text": "📸 2026F1中国大奖赛观赛&颁发小轮胎", "type": "type-activity", "category": "activity" },
+      { "text": "📷🧣📕 更新", "type": "type-sns", "category": "sns" }
+    ],
+    "details": [
+      {
+        "text": "📷 IG更新-和倍耐力共创·祝贺Kimi Antonelli夺得F1生涯杆位",
+        "sources": [
+          { "title": "IG原贴", "link": "https://www.instagram.com/p/DV29irUgr3w/?igsh=eHN3bG90b3YxODdi", "platform": "Instagram", "author": "lim_hyojun｜pirelli_motorsport" },
+          { "title": "微博搬运", "link": "https://weibo.com/7832568510/5276860231191270", "platform": "Weibo", "author": "-Bifröst-" }
+        ],
+        "categories": ["sns"]
+      },
+      {
+        "text": "🧣 微博更新-2026F1中国大奖赛",
+        "sources": [{ "title": "第一次在现场观赛F1", "link": "https://weibo.com/7725970927/5276477174056095", "platform": "Weibo", "author": "林孝埈Lin_xiaojun" }],
+        "categories": ["sns"]
+      },
+      {
+        "text": "📕 小红书更新-2026F1中国大奖赛",
+        "sources": [{ "title": "开心😘😘😘 #帅气的运动员#", "link": "http://xhslink.com/o/5KsWbvEKpRp", "platform": "Rednote", "author": "林孝埈" }],
+        "categories": ["sns"]
+      },
+      {
+        "text": "📸 官方提及小林-2026F1中国大奖赛",
+        "sources": [
+          { "title": "F1 IG更新", "link": "https://www.instagram.com/p/DV3HPSZCYCz/?img_index=5&igsh=MW9yZjl6Y3Aycm0yeA==", "platform": "Instagram", "author": "f1" },
+          { "title": "F1微博更新1-当冰场上的先锋遇上赛道上的极速", "link": "https://weibo.com/6501833072/5276363486661108", "platform": "Weibo", "author": "F1世界锦标赛" },
+          { "title": "F1微博更新2-赛场之上，众星云集✨", "link": "https://weibo.com/6501833072/5276376156609661", "platform": "Weibo", "author": "F1世界锦标赛" },
+          { "title": "F1微博更新3-颁发小轮胎合照", "link": "https://weibo.com/6501833072/5276402815600413", "platform": "Weibo", "author": "F1世界锦标赛" },
+          { "title": "F1微博更新4-小轮胎从冰上飞人手中给出", "link": "https://weibo.com/6501833072/5276408319575586", "platform": "Weibo", "author": "F1世界锦标赛" },
+          { "title": "F1抖音更新1-赛场之上，众星云集✨", "link": "https://v.douyin.com/OYhyqP4LY2k/ 12/11 f@O.KW ica:/", "platform": "Douyin", "author": "F1世界锦标赛" },
+          { "title": "F1抖音更新2-林孝埈为中国大奖赛杆位得主安东内利颁奖", "link": "https://v.douyin.com/p6t-1TM0A7U/ 03/26 p@Q.Xm zgb:/", "platform": "Douyin", "author": "F1世界锦标赛" },
+          { "title": "倍耐力IG更新-和小林共创", "link": "https://www.instagram.com/p/DV29irUgr3w/?igsh=eHN3bG90b3YxODdi", "platform": "Instagram", "author": "lim_hyojun｜pirelli_motorsport" },
+          { "title": "倍耐力转发小林微博-冰上先锋林孝埈与倍耐力亚太首席执行官马赞宁围场叙话", "link": "https://weibo.com/1660019355/5276513822839384", "platform": "Weibo", "author": "倍耐力" },
+          { "title": "倍耐力评论小林小红书-倍驭新境，帅气加倍", "link": "http://xhslink.com/o/5KsWbvEKpRp", "platform": "Rednote", "author": "倍耐力轮胎" }
+        ],
+        "categories": ["activity"]
+      },
+      {
+        "text": "📸 [现场直击] 图频·合影·同款-2026F1中国大奖赛",
+        "sources": [
+          { "title": "[图片] getty新闻图", "link": "https://weibo.com/6288073307/5276455153178189", "platform": "Weibo", "author": "[暂时]芬达的ROCKET" },
+          { "title": "[图片] getty新闻图新增两张", "link": "https://weibo.com/6288073307/5276420427223477", "platform": "Weibo", "author": "[暂时]芬达的ROCKET" },
+          { "title": "[官方转播] 五星体育官方转播2026F1中国大奖赛排位赛P1颁奖", "link": "https://weibo.com/7752648832/5276406861008352", "platform": "Weibo", "author": "[暂时]皮皮鸭__" },
+          { "title": "[合影] 邀请林孝埈开赛车，他说好主意", "link": "http://xhslink.com/n/2tMG2FChzLp", "platform": "Rednote", "author": "FlyingFinn" },
+          { "title": "[视频] F1冲刺赛赛前 赛道上的备战", "link": "http://xhslink.com/o/4QrbWbXwNrS", "platform": "Rednote", "author": "haysarshaer" },
+          { "title": "[视频] 林孝埈准备给F1排位赛颁奖", "link": "http://xhslink.com/o/wo0wUJq1Qk", "platform": "Rednote", "author": "haysarshaer" },
+          { "title": "[图片] 来了！林孝埈！", "link": "http://xhslink.com/n/8kkehUQZkrz", "platform": "Rednote", "author": "haysarshaer" },
+          { "title": "[图片] 抓到一只萌宝宝", "link": "https://weibo.com/5391594179/5276388936647956", "platform": "Weibo", "author": "专吃香芋小丸子" },
+          { "title": "[视频] 梦幻联动! 给Kimi颁奖的是林孝埈! ", "link": "http://xhslink.com/o/4VBq48nQTuk", "platform": "Rednote", "author": "FearlessZoe7" },
+          { "title": "[合影] 又一年与Lv的F1", "link": "http://xhslink.com/o/8Ai6cbZUgF9", "platform": "Rednote", "author": "ccczw威" },
+          { "title": "[图片] 当我在上赛场看到林孝埈", "link": "https://weibo.com/6156888019/5276407153822391", "platform": "Weibo", "author": "睡醒就起等于做梦" },
+          { "title": "[图片] 双厨狂喜", "link": "http://xhslink.com/o/AsOugsBWTIv", "platform": "Rednote", "author": "暴富才是正经事" },
+          { "title": "[图片] 林孝埈来F1颁奖啦! 速度与速度的联动! ", "link": "http://xhslink.com/o/7j99iZFMo9y", "platform": "Rednote", "author": "铭记场面" },
+          { "title": "[图片] 🏎️假期 尽情享受你的所有热爱吧☺️", "link": "https://weibo.com/5855699439/5276458809561441", "platform": "Weibo", "author": "-fallinforlin-" },
+          { "title": "[视频] 上赛排位赛林孝埈给小kimi颁奖 ", "link": "http://xhslink.com/o/1zGjckSfalG", "platform": "Rednote", "author": "窈劼_DING" }
+        ],
+        "categories": ["activity"]
+      }
+    ]
+  },
+  "2026-03-15": {
+    "tags": [
+      { "text": "📸 F1中国大奖赛观赛", "type": "type-activity", "category": "activity" },
+      { "text": "🧣📷📕 更新", "type": "type-sns", "category": "sns" }
+    ],
+    "details": [
+      {
+        "text": "🧣 微博更新-2026F1中国大奖赛·👍🏻",
+        "sources": [{ "title": "微博更新-2026F1中国大奖赛·👍🏻", "link": "https://weibo.com/7725970927/5276805101782850", "platform": "Weibo", "author": "林孝埈Lin_xiaojun" }],
+        "categories": ["sns"]
+      },
+      {
+        "text": "🧣 许魏洲微博与小林互动-2026F1中国大奖赛",
+        "sources": [
+          { "title": "🧣 许魏洲更新与小林合照", "link": "https://weibo.com/1797270765/5276817356493552", "platform": "Weibo", "author": "许魏洲ZZ" },
+          { "title": "小林评论许微博·看完比赛看美食", "link": "https://weibo.com/1797270765/5276817356493552", "platform": "Weibo", "author": "林孝埈Lin_xiaojun" },
+          { "title": "许回复小林评论·趁着休息多吃一点", "link": "https://weibo.com/1797270765/5276817356493552", "platform": "Weibo", "author": "许魏洲ZZ" },
+          { "title": "互动存档", "link": "https://weibo.com/7832568510/5276863803958193", "platform": "Weibo", "author": "-Bifröst-" }
+        ],
+        "categories": ["sns"]
+      },
+      {
+        "text": "📷 ins更新-2026F1中国大奖赛·👍🏻✨",
+        "sources": [
+          { "title": "ins原贴", "link": "https://www.instagram.com/p/DV5ut6EkkfJ/?igsh=MXByOXdiZmVxdDc0eQ==", "platform": "Instagram", "author": "lim_hyojun" },
+          { "title": "微博搬运", "link": "https://weibo.com/7832568510/5276856708240435", "platform": "Weibo", "author": "-Bifröst-" }
+        ],
+        "categories": ["sns"]
+      },
+      {
+        "text": "📕 小红书更新-2026F1中国大奖赛",
+        "sources": [{ "title": "🏁和倍耐力一起，一同见证！🛞", "link": "http://xhslink.com/o/1YvfbLOgIsu", "platform": "Rednote", "author": "林孝埈" }],
+        "categories": ["sns"]
+      }
+    ]
+  },
+  "2026-04-15": {
+    "tags": [
+      { "text": "📌 训练日志", "type": "type-record", "category": "record" }
+    ],
+    "details": [
+      {
+        "text": "今天进行了高强度体能训练，状态很好",
+        "categories": ["record"]
+      }
+    ]
+  }
+}
